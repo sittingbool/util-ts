@@ -1,5 +1,5 @@
 {
-  "name": "util-ts",
+  "name": "sb-util-ts",
   "version": "0.1.0",
   "description": "Typescript utility",
   "main": "./dist/src/index.js",
