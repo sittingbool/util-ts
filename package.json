@@ -1,0 +1,32 @@
+{
+  "name": "util-ts",
+  "version": "0.1.0",
+  "description": "Typescript utility",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "scripts": {
+    "test": "mocha ./dist/test/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sittingbool/util-ts.git"
+  },
+  "keywords": [
+    "util",
+    "typescript"
+  ],
+  "author": "Richard Habermann <sittingbool@gmx.de> (https://github.com/sittingbool)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sittingbool/util-ts/issues"
+  },
+  "homepage": "https://github.com/sittingbool/util-ts#readme",
+  "devDependencies": {
+    "@types/lodash": "^4.14.62",
+    "@types/node": "^7.0.13",
+    "mocha-typescript": "^1.0.23"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}
