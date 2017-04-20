@@ -1,9 +1,9 @@
 {
   "name": "sb-util-ts",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Typescript utility",
   "main": "./dist/src/util.js",
-  "types": "./dist/src/index.d.ts",
+  "types": "./dist/src/util.d.ts",
   "scripts": {
     "test": "mocha ./dist/test/*.spec.js"
   },
