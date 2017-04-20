@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
+const path = require("path");
 function stringIsEmpty(string) {
     return (typeof string !== 'string' || string.length < 1);
 }
@@ -48,4 +50,21 @@ function arrayIsEmpty(arr) {
     return !arr || !Array.isArray(arr) || arr.length < 1;
 }
 exports.arrayIsEmpty = arrayIsEmpty;
-//# sourceMappingURL=data.util.js.map
+function loadPackageInfo(fpath, key) {
+    let content;
+    let data = {};
+    try {
+        content = fs.readFileSync(path.join(fpath, 'package.json'), 'utf8');
+        data = JSON.parse(content);
+    }
+    catch (err) {
+        console.error(err);
+        return data || {};
+    }
+    if (!stringIsEmpty(key)) {
+        return data[key];
+    }
+    return data;
+}
+exports.loadPackageInfo = loadPackageInfo;
+//# sourceMappingURL=util.js.map

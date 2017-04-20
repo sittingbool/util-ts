@@ -1,3 +1,8 @@
+//-----------------------------------------------------------------------------------------------------
+import * as fs from 'fs';
+import * as path from 'path';
+//-----------------------------------------------------------------------------------------------------
+
 /**
  * Determines if a string is empty or not a string at all.
  * @param string - string to be checked
@@ -86,4 +91,27 @@ export function arrayIsEmpty(arr): boolean
 //------------------------------------------------------------------------------------------------------
 {
     return ! arr || !Array.isArray(arr) || arr.length < 1;
+}
+
+
+//------------------------------------------------------------------------------------------------------
+export function loadPackageInfo(fpath: string, key?:string): any
+//------------------------------------------------------------------------------------------------------
+{
+    let content:string;
+    let data = {};
+
+    try {
+        content = fs.readFileSync(path.join(fpath, 'package.json'), 'utf8');
+        data = JSON.parse(content);
+    } catch(err) {
+        console.error(err);
+        return data || {};
+    }
+
+    if ( !stringIsEmpty(key) ) {
+        return data[key];
+    }
+
+    return data;
 }
