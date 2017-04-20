@@ -25,20 +25,12 @@ function pluralize(string) {
     lastChar = string.charAt(string.length - 1);
     switch (lastChar) {
         case 's':
+        case 'x':
             pluralChar = 'es';
             break;
         case 'y':
             string = string.substring(0, string.length - 1);
             pluralChar = 'ies';
-            break;
-        case 'x':
-            if (string.charAt(string.length - 2) === 'e') {
-                string = string.substring(0, string.length - 2) + 'i';
-            }
-            else {
-                string = string.substring(0, string.length - 1);
-            }
-            pluralChar = 'ces';
             break;
         default:
             break;
