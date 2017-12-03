@@ -87,6 +87,14 @@ export function arrayIsEmpty(arr): boolean
 
 
 //------------------------------------------------------------------------------------------------------
+export function mapIsEmpty(map): boolean // object with string as keys has no strings or is no object
+//------------------------------------------------------------------------------------------------------
+{
+    return ! map || typeof map !== 'object' || Object.keys(map).length < 1;
+}
+
+
+//------------------------------------------------------------------------------------------------------
 export function loadPackageInfo(fpath: string, key?:string): any
 //------------------------------------------------------------------------------------------------------
 {

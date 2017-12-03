@@ -1,5 +1,5 @@
 import { suite, test} from "mocha-typescript";
-import {arrayIsEmpty, capitalize, pluralize, stringIsEmpty} from "../src/util";
+import {arrayIsEmpty, capitalize, mapIsEmpty, pluralize, stringIsEmpty} from "../src/util";
 import * as should from 'should';
 
 @suite
@@ -27,7 +27,6 @@ class UtilTest {
 
     @test("should create capital first char in string")
     assert_capitalize() {
-        let test;
 
         should(capitalize('test')).be.equal('Test');
         should(capitalize('Test')).be.equal('Test');
@@ -35,11 +34,24 @@ class UtilTest {
 
     @test("should create plural word from string")
     assert_pluralize() {
-        let test;
 
         should(pluralize('test')).be.equal('tests');
         should(pluralize('index')).be.equal('indexes');
         should(pluralize('house')).be.equal('houses');
         should(pluralize('entity')).be.equal('entities');
+    }
+
+    @test("should detect empty object map")
+    assert_mapIsEmpty() {
+        let test;
+
+        should(mapIsEmpty(test)).be.true();
+        should(mapIsEmpty(null)).be.true();
+        should(mapIsEmpty([])).be.true();
+        should(mapIsEmpty({})).be.true();
+        should(mapIsEmpty({ key: '' })).be.false();
+        should(mapIsEmpty({ key: true })).be.false();
+        should(mapIsEmpty({ key: 1 })).be.false();
+        should(mapIsEmpty({ key: null })).be.false();
     }
 }

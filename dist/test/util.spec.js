@@ -25,16 +25,25 @@ let UtilTest = class UtilTest {
         should(util_1.arrayIsEmpty([{}])).be.false();
     }
     assert_capitalize() {
-        let test;
         should(util_1.capitalize('test')).be.equal('Test');
         should(util_1.capitalize('Test')).be.equal('Test');
     }
     assert_pluralize() {
-        let test;
         should(util_1.pluralize('test')).be.equal('tests');
         should(util_1.pluralize('index')).be.equal('indexes');
         should(util_1.pluralize('house')).be.equal('houses');
         should(util_1.pluralize('entity')).be.equal('entities');
+    }
+    assert_mapIsEmpty() {
+        let test;
+        should(util_1.mapIsEmpty(test)).be.true();
+        should(util_1.mapIsEmpty(null)).be.true();
+        should(util_1.mapIsEmpty([])).be.true();
+        should(util_1.mapIsEmpty({})).be.true();
+        should(util_1.mapIsEmpty({ key: '' })).be.false();
+        should(util_1.mapIsEmpty({ key: true })).be.false();
+        should(util_1.mapIsEmpty({ key: 1 })).be.false();
+        should(util_1.mapIsEmpty({ key: null })).be.false();
     }
 };
 __decorate([
@@ -49,6 +58,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should create plural word from string")
 ], UtilTest.prototype, "assert_pluralize", null);
+__decorate([
+    mocha_typescript_1.test("should detect empty object map")
+], UtilTest.prototype, "assert_mapIsEmpty", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

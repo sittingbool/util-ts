@@ -42,6 +42,10 @@ function arrayIsEmpty(arr) {
     return !arr || !Array.isArray(arr) || arr.length < 1;
 }
 exports.arrayIsEmpty = arrayIsEmpty;
+function mapIsEmpty(map) {
+    return !map || typeof map !== 'object' || Object.keys(map).length < 1;
+}
+exports.mapIsEmpty = mapIsEmpty;
 function loadPackageInfo(fpath, key) {
     let content;
     let data = {};
