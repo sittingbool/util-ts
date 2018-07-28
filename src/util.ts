@@ -22,7 +22,7 @@ const path = _path;
  * @return {boolean} - true if not a string or empty (zero length of characters; ' ' will return false)
  */
 //-----------------------------------------------------------------------------------------------------
-export function stringIsEmpty( string: string)
+export function stringIsEmpty( string: string): boolean
 //-----------------------------------------------------------------------------------------------------
 {
     return ( typeof string !== 'string' || string.length < 1 );
