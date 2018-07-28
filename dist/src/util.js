@@ -1,6 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require("fs");
+let _fs;
+try {
+    _fs = require('fs');
+}
+catch (err) {
+    _fs = null;
+}
+const fs = _fs;
 const path = require("path");
 function stringIsEmpty(string) {
     return (typeof string !== 'string' || string.length < 1);
@@ -49,6 +56,10 @@ exports.mapIsEmpty = mapIsEmpty;
 function loadPackageInfo(fpath, key) {
     let content;
     let data = {};
+    if (!fs) {
+        console.log('loadPackageInfo only works if you can require node.js module `fs`');
+        return null;
+    }
     try {
         content = fs.readFileSync(path.join(fpath, 'package.json'), 'utf8');
         data = JSON.parse(content);

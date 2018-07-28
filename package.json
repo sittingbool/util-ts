@@ -1,6 +1,6 @@
 {
   "name": "sb-util-ts",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Typescript utility",
   "main": "./dist/src/util.js",
   "types": "./dist/src/util.d.ts",
@@ -23,9 +23,9 @@
   "homepage": "https://github.com/sittingbool/util-ts#readme",
   "devDependencies": {
     "@types/lodash": "^4.14.87",
-    "@types/node": "^8.0.54",
-    "@types/should": "^11.2.0",
-    "mocha": "^4.0.1",
+    "@types/node": "^10.5.4",
+    "@types/should": "^13.0.0",
+    "mocha": "^5.2.0",
     "mocha-typescript": "^1.1.12",
     "should": "^13.1.3"
   },

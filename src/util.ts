@@ -1,5 +1,11 @@
 //-----------------------------------------------------------------------------------------------------
-import * as fs from 'fs';
+let _fs;
+try {
+    _fs = require( 'fs');
+} catch (err) {
+    _fs = null;
+}
+const fs = _fs;
 import * as path from 'path';
 //-----------------------------------------------------------------------------------------------------
 
@@ -100,6 +106,11 @@ export function loadPackageInfo(fpath: string, key?:string): any
 {
     let content:string;
     let data = {};
+
+    if (!fs) {
+        console.log('loadPackageInfo only works if you can require node.js module `fs`');
+        return null;
+    }
 
     try {
         content = fs.readFileSync(path.join(fpath, 'package.json'), 'utf8');
