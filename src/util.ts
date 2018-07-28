@@ -1,12 +1,19 @@
 //-----------------------------------------------------------------------------------------------------
+function isBrowser() {
+    return (typeof window !== 'undefined');
+}
+
 let _fs;
-try {
+let _path;
+if (!isBrowser()) {
     _fs = require( 'fs');
-} catch (err) {
+    _path = require( 'path');
+} else {
     _fs = null;
+    _path = null;
 }
 const fs = _fs;
-import * as path from 'path';
+const path = _path;
 //-----------------------------------------------------------------------------------------------------
 
 /**
@@ -107,7 +114,7 @@ export function loadPackageInfo(fpath: string, key?:string): any
     let content:string;
     let data = {};
 
-    if (!fs) {
+    if (!fs || !path) {
         console.log('loadPackageInfo only works if you can require node.js module `fs`');
         return null;
     }

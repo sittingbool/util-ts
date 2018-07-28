@@ -1,14 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-let _fs;
-try {
-    _fs = require('fs');
+function isBrowser() {
+    return (typeof window !== 'undefined');
 }
-catch (err) {
+let _fs;
+let _path;
+if (!isBrowser()) {
+    _fs = require('fs');
+    _path = require('path');
+}
+else {
     _fs = null;
+    _path = null;
 }
 const fs = _fs;
-const path = require("path");
+const path = _path;
 function stringIsEmpty(string) {
     return (typeof string !== 'string' || string.length < 1);
 }
@@ -56,7 +62,7 @@ exports.mapIsEmpty = mapIsEmpty;
 function loadPackageInfo(fpath, key) {
     let content;
     let data = {};
-    if (!fs) {
+    if (!fs || !path) {
         console.log('loadPackageInfo only works if you can require node.js module `fs`');
         return null;
     }
