@@ -15,8 +15,9 @@ else {
 }
 const fs = _fs;
 const path = _path;
+const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 function stringIsEmpty(string) {
-    return (typeof string !== 'string' || string.length < 1);
+    return (typeof string !== 'string' || !string);
 }
 exports.stringIsEmpty = stringIsEmpty;
 function capitalize(string) {
@@ -51,8 +52,16 @@ function pluralize(string) {
     return string + pluralChar;
 }
 exports.pluralize = pluralize;
+function randomString(length, chars = RANDOMIZE_CHARSET_DEFAULT) {
+    let result = '', i;
+    for (i = length; i > 0; --i) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+}
+exports.randomString = randomString;
 function arrayIsEmpty(arr) {
-    return !arr || !Array.isArray(arr) || arr.length < 1;
+    return !Array.isArray(arr) || arr.length < 1;
 }
 exports.arrayIsEmpty = arrayIsEmpty;
 function mapIsEmpty(map) {

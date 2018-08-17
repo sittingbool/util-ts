@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mocha_typescript_1 = require("mocha-typescript");
 const util_1 = require("../src/util");
 const should = require("should");
+const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 let UtilTest = class UtilTest {
     assert_stringIsEmpty() {
         let test;
@@ -34,6 +35,23 @@ let UtilTest = class UtilTest {
         should(util_1.pluralize('house')).be.equal('houses');
         should(util_1.pluralize('entity')).be.equal('entities');
     }
+    assert_randomString() {
+        let allChars = RANDOMIZE_CHARSET_DEFAULT.split('');
+        let random = util_1.randomString(10);
+        should(random).be.a.String();
+        should(random.length).be.exactly(10);
+        should(random.split('').filter(char => allChars.indexOf(char) < 0).length).lessThan(1);
+        random = util_1.randomString(23);
+        should(random).be.a.String();
+        should(random.length).be.exactly(23);
+        should(random.split('').filter(char => allChars.indexOf(char) < 0).length).lessThan(1);
+        let allCharsAllowed = 'lkjhdfas!98';
+        allChars = allCharsAllowed.split('');
+        random = util_1.randomString(50, allCharsAllowed);
+        should(random).be.a.String();
+        should(random.length).be.exactly(50);
+        should(random.split('').filter(char => allChars.indexOf(char) < 0).length).lessThan(1);
+    }
     assert_mapIsEmpty() {
         let test;
         should(util_1.mapIsEmpty(test)).be.true();
@@ -50,7 +68,7 @@ __decorate([
     mocha_typescript_1.test("should find empty string")
 ], UtilTest.prototype, "assert_stringIsEmpty", null);
 __decorate([
-    mocha_typescript_1.test("should find empty string")
+    mocha_typescript_1.test("should find empty array")
 ], UtilTest.prototype, "assert_arrayIsEmpty", null);
 __decorate([
     mocha_typescript_1.test("should create capital first char in string")
@@ -58,6 +76,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should create plural word from string")
 ], UtilTest.prototype, "assert_pluralize", null);
+__decorate([
+    mocha_typescript_1.test("should create a random string with given length")
+], UtilTest.prototype, "assert_randomString", null);
 __decorate([
     mocha_typescript_1.test("should detect empty object map")
 ], UtilTest.prototype, "assert_mapIsEmpty", null);

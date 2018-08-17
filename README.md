@@ -6,6 +6,7 @@ Lightweight custom Typescript utility
 - `stringIsEmpty(value: string): boolean` - returns true is the given value is not a string or empty
 - `capitalize(value: string): string` - returns the given string with an upper cased first character
 - `pluralize(value: string): string` - returns the given string as plural (like onion -> onions or entity -> entities) with different detection of word endings (like y -> ies)
+- `randomString(length: number, chars?: string): string` - returns a random string with the given length. Optionally takes a list of chars that the random string is allowed to contain in form of a string.
 - `arrayIsEmpty(value: any[]): boolean` - returns true is the given array is not an array or empty
 - `mapIsEmpty(value: any): boolean` - returns true is the given object is not an object or has no properties (meaning equals: `{})
 - `loadPackageInfo(fpath: string, key?:string): any` - returns the package.json given in `fpath`, optionally you can return a specific key's value by setting `key`

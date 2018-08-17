@@ -14,6 +14,8 @@ if (!isBrowser()) {
 }
 const fs = _fs;
 const path = _path;
+
+const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 //-----------------------------------------------------------------------------------------------------
 
 /**
@@ -25,7 +27,7 @@ const path = _path;
 export function stringIsEmpty( string: string): boolean
 //-----------------------------------------------------------------------------------------------------
 {
-    return ( typeof string !== 'string' || string.length < 1 );
+    return ( typeof string !== 'string' || !string );
 }
 
 
@@ -91,11 +93,30 @@ export function pluralize( string:string): string
 }
 
 
+/**
+ * Returns a random string with the defined length and the characters given
+ * @param length - the number of characters the random string should have
+ * @param chars - (optional) a string containing all chars that should be represented in the random string,
+ * defaults to '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+ * @return {string} - the random string
+ */
+//------------------------------------------------------------------------------------------------------
+export function randomString(length: number, chars: string = RANDOMIZE_CHARSET_DEFAULT): string
+//------------------------------------------------------------------------------------------------------
+{
+    let result = '', i;
+    for (i = length; i > 0; --i) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+}
+
+
 //------------------------------------------------------------------------------------------------------
 export function arrayIsEmpty(arr): boolean
 //------------------------------------------------------------------------------------------------------
 {
-    return ! arr || !Array.isArray(arr) || arr.length < 1;
+    return !Array.isArray(arr) || arr.length < 1;
 }
 
 
