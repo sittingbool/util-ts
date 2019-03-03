@@ -63,6 +63,37 @@ let UtilTest = class UtilTest {
         should(util_1.mapIsEmpty({ key: 1 })).be.false();
         should(util_1.mapIsEmpty({ key: null })).be.false();
     }
+    assert_compareArrays() {
+        const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
+        should(JSON.stringify(result.same)).be.eql(JSON.stringify([{ b: 2 }, 2, 3, 'test1', 'test2']));
+        should(result.changed.length).be.exactly(0);
+        should(result.onlyInLeft.length).be.exactly(2);
+        should(JSON.stringify(result.onlyInLeft)).be.eql(JSON.stringify([{ a: 1 }, 'test3']));
+        should(result.onlyInRight.length).be.exactly(2);
+        should(JSON.stringify(result.onlyInRight)).be.eql(JSON.stringify([{ a: 3 }, 4]));
+    }
+    assert_compareArraysByComparator() {
+        const comparator = (left, right) => {
+            switch (typeof left) {
+                case 'object':
+                    if (!left || !right) {
+                        return left === right;
+                    }
+                    const key = Object.keys(left)[0];
+                    return left[key] !== undefined && right[key] !== undefined;
+                default:
+                    return left === right;
+            }
+        };
+        const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2'], comparator);
+        should(JSON.stringify(result.same)).be.eql(JSON.stringify([{ b: 2 }, 2, 3, 'test1', 'test2']));
+        should(result.changed.length).be.exactly(1);
+        should(JSON.stringify(result.changed)).be.eql(JSON.stringify([{ a: 1 }]));
+        should(result.onlyInLeft.length).be.exactly(1);
+        should(JSON.stringify(result.onlyInLeft)).be.eql(JSON.stringify(['test3']));
+        should(result.onlyInRight.length).be.exactly(1);
+        should(JSON.stringify(result.onlyInRight)).be.eql(JSON.stringify([4]));
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -82,6 +113,12 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should detect empty object map")
 ], UtilTest.prototype, "assert_mapIsEmpty", null);
+__decorate([
+    mocha_typescript_1.test("should correctly compare two arrays, all changes, default comparison")
+], UtilTest.prototype, "assert_compareArrays", null);
+__decorate([
+    mocha_typescript_1.test("should correctly compare two arrays, all changes, custom comparison")
+], UtilTest.prototype, "assert_compareArraysByComparator", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

@@ -16,6 +16,18 @@ const fs = _fs;
 const path = _path;
 
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+export type ArrayItemSame = (left: any, right: any) => boolean;
+const defaultArrayItemSame = (left: any, right: any) => {
+    return JSON.stringify(left) === JSON.stringify(right);
+};
+
+export interface ArrayCompareResult {
+    onlyInLeft: any[];
+    changed: any[];
+    same: any[];
+    onlyInRight: any[];
+}
 //-----------------------------------------------------------------------------------------------------
 
 /**
@@ -23,10 +35,7 @@ const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHI
  * @param string - string to be checked
  * @return {boolean} - true if not a string or empty (zero length of characters; ' ' will return false)
  */
-//-----------------------------------------------------------------------------------------------------
-export function stringIsEmpty( string: string): boolean
-//-----------------------------------------------------------------------------------------------------
-{
+export function stringIsEmpty( string: string): boolean {
     return ( typeof string !== 'string' || !string );
 }
 
@@ -36,10 +45,7 @@ export function stringIsEmpty( string: string): boolean
  * @param string - string to be altered
  * @return {string} - string as given just with capital first letter
  */
-//------------------------------------------------------------------------------------------------------
-export function capitalize( string:string): string
-//------------------------------------------------------------------------------------------------------
-{
+export function capitalize( string:string): string {
     let firstChar;
 
     if ( stringIsEmpty(string) ) {
@@ -62,10 +68,7 @@ export function capitalize( string:string): string
  * @param string - the singular english word
  * @return {string} - the plural english word
  */
-//------------------------------------------------------------------------------------------------------
-export function pluralize( string:string): string
-//------------------------------------------------------------------------------------------------------
-{
+export function pluralize( string:string): string {
     let lastChar, pluralChar = 's';
 
     if ( stringIsEmpty(string) ) {
@@ -100,10 +103,7 @@ export function pluralize( string:string): string
  * defaults to '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
  * @return {string} - the random string
  */
-//------------------------------------------------------------------------------------------------------
-export function randomString(length: number, chars: string = RANDOMIZE_CHARSET_DEFAULT): string
-//------------------------------------------------------------------------------------------------------
-{
+export function randomString(length: number, chars: string = RANDOMIZE_CHARSET_DEFAULT): string {
     let result = '', i;
     for (i = length; i > 0; --i) {
         result += chars[Math.floor(Math.random() * chars.length)];
@@ -112,26 +112,16 @@ export function randomString(length: number, chars: string = RANDOMIZE_CHARSET_D
 }
 
 
-//------------------------------------------------------------------------------------------------------
-export function arrayIsEmpty(arr): boolean
-//------------------------------------------------------------------------------------------------------
-{
+export function arrayIsEmpty(arr): boolean {
     return !Array.isArray(arr) || arr.length < 1;
 }
 
 
-//------------------------------------------------------------------------------------------------------
-export function mapIsEmpty(map): boolean // object with string as keys has no strings or is no object
-//------------------------------------------------------------------------------------------------------
-{
+export function mapIsEmpty(map): boolean { // object with string as keys has no strings or is no object
     return ! map || typeof map !== 'object' || Object.keys(map).length < 1;
 }
 
-
-//------------------------------------------------------------------------------------------------------
-export function loadPackageInfo(fpath: string, key?:string): any
-//------------------------------------------------------------------------------------------------------
-{
+export function loadPackageInfo(fpath: string, key?:string): any {
     let content:string;
     let data = {};
 
@@ -153,4 +143,43 @@ export function loadPackageInfo(fpath: string, key?:string): any
     }
 
     return data;
+}
+
+/**
+ * Array comparator for full change detection
+ * Compares two arrays for items that are the same, items that have updates, items that only exist in the one ot the other
+ * @param left - the one array to be compared with right
+ * @param right - the other array to be compared with left
+ * @param comp - an optional function that returns true if the two given items are the same in both arrays, ignoring changes (e.g. compared by id), defaults to a comparison using JSON.stringify
+ * @param fullComp - an optional function that returns true if the two given items are the same all data, defaults to a comparison using JSON.stringify if comp is a custom function, otherwise ignored
+ */
+export function compareArrays(left: any[], right: any[], comp?: ArrayItemSame, fullComp?: ArrayItemSame): ArrayCompareResult {
+    let result: ArrayCompareResult = { onlyInLeft: [], changed: [], same: [], onlyInRight: [] };
+    let sameInRight: any[] = [];
+    let changedInRight: any[] = [];
+    comp = comp || defaultArrayItemSame;
+    fullComp = fullComp || defaultArrayItemSame;
+    result.same = left.filter(item => {
+        for(let i = 0; i < right.length; i++) {
+            if (comp(item, right[i]) && ( comp === fullComp || fullComp(item, right[i]) )) {
+                sameInRight.push(right[i]);
+                return true;
+            }
+        }
+        return false;
+    });
+    if (comp !== fullComp) {
+        result.changed = left.filter(item => {
+            for (let i = 0; i < right.length; i++) {
+                if (result.same.indexOf(item) < 0 && comp(item, right[i])) {
+                    changedInRight.push(right[i]);
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+    result.onlyInLeft = left.filter(item => result.same.indexOf(item) < 0 && result.changed.indexOf(item) < 0);
+    result.onlyInRight = right.filter(item => sameInRight.indexOf(item) < 0 && changedInRight.indexOf(item) < 0);
+    return result;
 }

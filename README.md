@@ -10,8 +10,13 @@ Lightweight custom Typescript utility
 - `arrayIsEmpty(value: any[]): boolean` - returns true is the given array is not an array or empty
 - `mapIsEmpty(value: any): boolean` - returns true is the given object is not an object or has no properties (meaning equals: `{})
 - `loadPackageInfo(fpath: string, key?:string): any` - returns the package.json given in `fpath`, optionally you can return a specific key's value by setting `key`
+- `compareArrays(left: any[], right: any[], comp?: ArrayItemSame, fullComp?: ArrayItemSame): ArrayCompareResult` - Array comparator for full change detection. You can optionally add a compare - function that identifies ignoring changes (e.g. by a single property such as the id of a db object) and also a full comparison callback that returns true if there are no changes. Both default to comparing via JSON.stringify. Please read the comments in the src file. Types meaning:
+    - ArrayCompareResult = `{ onlyInLeft: any[], changed: any[], same: any[],onlyInRight: any[] }`
+    - ArrayItemSame = `(left: any, right: any) => boolean`
 
-read tests in https://github.com/sittingbool/util-ts/blob/master/test/util.spec.ts
+For more details:
+- read comments in in https://github.com/sittingbool/util-ts/blob/master/src/util.ts
+- read tests in https://github.com/sittingbool/util-ts/blob/master/test/util.spec.ts
 
 ## browser support
 - is now given since 1.1.1 (checking if `window exists)
