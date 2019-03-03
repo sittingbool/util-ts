@@ -16,6 +16,9 @@ else {
 const fs = _fs;
 const path = _path;
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const defaultArrayItemSame = (left, right) => {
+    return JSON.stringify(left) === JSON.stringify(right);
+};
 function stringIsEmpty(string) {
     return (typeof string !== 'string' || !string);
 }
@@ -89,4 +92,35 @@ function loadPackageInfo(fpath, key) {
     return data;
 }
 exports.loadPackageInfo = loadPackageInfo;
+function compareArrays(left, right, comp, fullComp) {
+    let result = { onlyInLeft: [], changed: [], same: [], onlyInRight: [] };
+    let sameInRight = [];
+    let changedInRight = [];
+    comp = comp || defaultArrayItemSame;
+    fullComp = fullComp || defaultArrayItemSame;
+    result.same = left.filter(item => {
+        for (let i = 0; i < right.length; i++) {
+            if (comp(item, right[i]) && (comp === fullComp || fullComp(item, right[i]))) {
+                sameInRight.push(right[i]);
+                return true;
+            }
+        }
+        return false;
+    });
+    if (comp !== fullComp) {
+        result.changed = left.filter(item => {
+            for (let i = 0; i < right.length; i++) {
+                if (result.same.indexOf(item) < 0 && comp(item, right[i])) {
+                    changedInRight.push(right[i]);
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+    result.onlyInLeft = left.filter(item => result.same.indexOf(item) < 0 && result.changed.indexOf(item) < 0);
+    result.onlyInRight = right.filter(item => sameInRight.indexOf(item) < 0 && changedInRight.indexOf(item) < 0);
+    return result;
+}
+exports.compareArrays = compareArrays;
 //# sourceMappingURL=util.js.map
