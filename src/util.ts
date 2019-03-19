@@ -35,7 +35,7 @@ export interface ArrayCompareResult {
  * @param string - string to be checked
  * @return {boolean} - true if not a string or empty (zero length of characters; ' ' will return false)
  */
-export function stringIsEmpty( string: string): boolean {
+export function stringIsEmpty( string: string | undefined): boolean {
     return ( typeof string !== 'string' || !string );
 }
 
@@ -112,16 +112,16 @@ export function randomString(length: number, chars: string = RANDOMIZE_CHARSET_D
 }
 
 
-export function arrayIsEmpty(arr): boolean {
+export function arrayIsEmpty(arr: any[] | undefined): boolean {
     return !Array.isArray(arr) || arr.length < 1;
 }
 
 
-export function mapIsEmpty(map): boolean { // object with string as keys has no strings or is no object
+export function mapIsEmpty(map: any | undefined): boolean { // object with string as keys has no strings or is no object
     return ! map || typeof map !== 'object' || Object.keys(map).length < 1;
 }
 
-export function loadPackageInfo(fpath: string, key?:string): any {
+export function loadPackageInfo(filePath: string, key?:string): any {
     let content:string;
     let data = {};
 
@@ -131,7 +131,7 @@ export function loadPackageInfo(fpath: string, key?:string): any {
     }
 
     try {
-        content = fs.readFileSync(path.join(fpath, 'package.json'), 'utf8');
+        content = fs.readFileSync(path.join(filePath, 'package.json'), 'utf8');
         data = JSON.parse(content);
     } catch(err) {
         console.error(err);

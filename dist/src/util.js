@@ -71,7 +71,7 @@ function mapIsEmpty(map) {
     return !map || typeof map !== 'object' || Object.keys(map).length < 1;
 }
 exports.mapIsEmpty = mapIsEmpty;
-function loadPackageInfo(fpath, key) {
+function loadPackageInfo(filePath, key) {
     let content;
     let data = {};
     if (!fs || !path) {
@@ -79,7 +79,7 @@ function loadPackageInfo(fpath, key) {
         return null;
     }
     try {
-        content = fs.readFileSync(path.join(fpath, 'package.json'), 'utf8');
+        content = fs.readFileSync(path.join(filePath, 'package.json'), 'utf8');
         data = JSON.parse(content);
     }
     catch (err) {
