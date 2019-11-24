@@ -13,3 +13,4 @@ export declare function arrayIsEmpty(arr: any[] | undefined): boolean;
 export declare function mapIsEmpty(map: any | undefined): boolean;
 export declare function loadPackageInfo(filePath: string, key?: string): any;
 export declare function compareArrays(left: any[], right: any[], comp?: ArrayItemSame, fullComp?: ArrayItemSame): ArrayCompareResult;
+export declare function boolFromString(value: string, trim?: boolean): boolean | undefined;

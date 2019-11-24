@@ -183,3 +183,22 @@ export function compareArrays(left: any[], right: any[], comp?: ArrayItemSame, f
     result.onlyInRight = right.filter(item => sameInRight.indexOf(item) < 0 && changedInRight.indexOf(item) < 0);
     return result;
 }
+
+export function boolFromString(value: string, trim: boolean = true): boolean | undefined {
+    if (stringIsEmpty(value)) return;
+    value = trim ? value.trim() : value;
+    switch (value.toLowerCase()) {
+        case 'no':
+        case 'false':
+        case '0':
+            return false;
+
+        case 'yes':
+        case 'true':
+        case '1':
+            return true;
+
+        default:
+            return;
+    }
+}

@@ -94,6 +94,31 @@ let UtilTest = class UtilTest {
         should(result.onlyInRight.length).be.exactly(1);
         should(JSON.stringify(result.onlyInRight)).be.eql(JSON.stringify([4]));
     }
+    assert_boolFromString() {
+        should(util_1.boolFromString('Yes')).be.true();
+        should(util_1.boolFromString('yes')).be.true();
+        should(util_1.boolFromString('YES')).be.true();
+        should(util_1.boolFromString('True')).be.true();
+        should(util_1.boolFromString('true')).be.true();
+        should(util_1.boolFromString('TRUE')).be.true();
+        should(util_1.boolFromString('1')).be.true();
+        should(util_1.boolFromString('No')).be.false();
+        should(util_1.boolFromString('no')).be.false();
+        should(util_1.boolFromString('NO')).be.false();
+        should(util_1.boolFromString('False')).be.false();
+        should(util_1.boolFromString('false')).be.false();
+        should(util_1.boolFromString('FALSE')).be.false();
+        should(util_1.boolFromString('0')).be.false();
+        should(typeof util_1.boolFromString('Ye')).be.exactly('undefined');
+        should(typeof util_1.boolFromString(undefined)).be.exactly('undefined');
+        should(typeof util_1.boolFromString(null)).be.exactly('undefined');
+        should(typeof util_1.boolFromString('2')).be.exactly('undefined');
+        should(typeof util_1.boolFromString(10)).be.exactly('undefined');
+        should(typeof util_1.boolFromString(2)).be.exactly('undefined');
+        should(typeof util_1.boolFromString('null')).be.exactly('undefined');
+        should(typeof util_1.boolFromString('')).be.exactly('undefined');
+        should(typeof util_1.boolFromString('ajdfhlajhsfj')).be.exactly('undefined');
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -119,6 +144,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly compare two arrays, all changes, custom comparison")
 ], UtilTest.prototype, "assert_compareArraysByComparator", null);
+__decorate([
+    mocha_typescript_1.test("should correctly convert a string to a boolean , only if its a boolean value in the string")
+], UtilTest.prototype, "assert_boolFromString", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

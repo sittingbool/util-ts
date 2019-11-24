@@ -2,6 +2,7 @@ import { suite, test} from "mocha-typescript";
 import {
     arrayIsEmpty,
     ArrayItemSame,
+    boolFromString,
     capitalize,
     compareArrays,
     mapIsEmpty,
@@ -121,5 +122,35 @@ class UtilTest {
         should(JSON.stringify(result.onlyInLeft)).be.eql(JSON.stringify(['test3']));
         should(result.onlyInRight.length).be.exactly(1);
         should(JSON.stringify(result.onlyInRight)).be.eql(JSON.stringify([4]));
+    }
+
+    @test("should correctly convert a string to a boolean , only if its a boolean value in the string")
+    assert_boolFromString() {
+        should(boolFromString('Yes')).be.true();
+        should(boolFromString('yes')).be.true();
+        should(boolFromString('YES')).be.true();
+        should(boolFromString('True')).be.true();
+        should(boolFromString('true')).be.true();
+        should(boolFromString('TRUE')).be.true();
+        should(boolFromString('1')).be.true();
+
+        should(boolFromString('No')).be.false();
+        should(boolFromString('no')).be.false();
+        should(boolFromString('NO')).be.false();
+        should(boolFromString('False')).be.false();
+        should(boolFromString('false')).be.false();
+        should(boolFromString('FALSE')).be.false();
+        should(boolFromString('0')).be.false();
+
+
+        should(typeof boolFromString('Ye')).be.exactly('undefined');
+        should(typeof boolFromString(undefined)).be.exactly('undefined');
+        should(typeof boolFromString(null)).be.exactly('undefined');
+        should(typeof boolFromString('2')).be.exactly('undefined');
+        should(typeof boolFromString((<any>10))).be.exactly('undefined');
+        should(typeof boolFromString((<any>2))).be.exactly('undefined');
+        should(typeof boolFromString('null')).be.exactly('undefined');
+        should(typeof boolFromString('')).be.exactly('undefined');
+        should(typeof boolFromString('ajdfhlajhsfj')).be.exactly('undefined');
     }
 }

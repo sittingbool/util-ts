@@ -123,4 +123,22 @@ function compareArrays(left, right, comp, fullComp) {
     return result;
 }
 exports.compareArrays = compareArrays;
+function boolFromString(value, trim = true) {
+    if (stringIsEmpty(value))
+        return;
+    value = trim ? value.trim() : value;
+    switch (value.toLowerCase()) {
+        case 'no':
+        case 'false':
+        case '0':
+            return false;
+        case 'yes':
+        case 'true':
+        case '1':
+            return true;
+        default:
+            return;
+    }
+}
+exports.boolFromString = boolFromString;
 //# sourceMappingURL=util.js.map
