@@ -3,18 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 function isBrowser() {
     return (typeof window !== 'undefined');
 }
-let _fs;
-let _path;
-if (!isBrowser()) {
-    _fs = require('fs');
-    _path = require('path');
-}
-else {
-    _fs = null;
-    _path = null;
-}
-const fs = _fs;
-const path = _path;
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const defaultArrayItemSame = (left, right) => {
     return JSON.stringify(left) === JSON.stringify(right);
@@ -72,6 +60,18 @@ function mapIsEmpty(map) {
 }
 exports.mapIsEmpty = mapIsEmpty;
 function loadPackageInfo(filePath, key) {
+    let _fs;
+    let _path;
+    if (!isBrowser()) {
+        _fs = require('fs');
+        _path = require('path');
+    }
+    else {
+        _fs = null;
+        _path = null;
+    }
+    const fs = _fs;
+    const path = _path;
     let content;
     let data = {};
     if (!fs || !path) {
@@ -141,4 +141,8 @@ function boolFromString(value, trim = true) {
     }
 }
 exports.boolFromString = boolFromString;
+function randomNumberForRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+exports.randomNumberForRange = randomNumberForRange;
 //# sourceMappingURL=util.js.map

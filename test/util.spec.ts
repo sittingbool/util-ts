@@ -6,7 +6,7 @@ import {
     capitalize,
     compareArrays,
     mapIsEmpty,
-    pluralize,
+    pluralize, randomNumberForRange,
     randomString,
     stringIsEmpty
 } from "../src/util";
@@ -152,5 +152,24 @@ class UtilTest {
         should(typeof boolFromString('null')).be.exactly('undefined');
         should(typeof boolFromString('')).be.exactly('undefined');
         should(typeof boolFromString('ajdfhlajhsfj')).be.exactly('undefined');
+    }
+
+    @test("should correctly return a random number in range")
+    assert_randomNumberForRange() {
+        const ranges = [[0, 1], [1, 5], [1, 10], [5, 15], [0, 100]];
+        const adaptorLimit = 100;
+        for(const r of ranges) {
+            let min = r[0];
+            let max = r[1];
+            let adaptor = 0;
+            while (adaptor <= adaptorLimit) {
+                const minimum = min + adaptor;
+                const maximum = max + adaptor;
+                const result = randomNumberForRange(minimum, maximum);
+                should(result).be.aboveOrEqual(minimum)
+                should(result).be.belowOrEqual(maximum);
+                adaptor++;
+            }
+        }
     }
 }

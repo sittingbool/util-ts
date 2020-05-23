@@ -119,6 +119,23 @@ let UtilTest = class UtilTest {
         should(typeof util_1.boolFromString('')).be.exactly('undefined');
         should(typeof util_1.boolFromString('ajdfhlajhsfj')).be.exactly('undefined');
     }
+    assert_randomNumberForRange() {
+        const ranges = [[0, 1], [1, 5], [1, 10], [5, 15], [0, 100]];
+        const adaptorLimit = 100;
+        for (const r of ranges) {
+            let min = r[0];
+            let max = r[1];
+            let adaptor = 0;
+            while (adaptor <= adaptorLimit) {
+                const minimum = min + adaptor;
+                const maximum = max + adaptor;
+                const result = util_1.randomNumberForRange(minimum, maximum);
+                should(result).be.aboveOrEqual(minimum);
+                should(result).be.belowOrEqual(maximum);
+                adaptor++;
+            }
+        }
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -147,6 +164,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly convert a string to a boolean , only if its a boolean value in the string")
 ], UtilTest.prototype, "assert_boolFromString", null);
+__decorate([
+    mocha_typescript_1.test("should correctly return a random number in range")
+], UtilTest.prototype, "assert_randomNumberForRange", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

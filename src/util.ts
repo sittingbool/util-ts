@@ -3,18 +3,6 @@ function isBrowser() {
     return (typeof window !== 'undefined');
 }
 
-let _fs;
-let _path;
-if (!isBrowser()) {
-    _fs = require( 'fs');
-    _path = require( 'path');
-} else {
-    _fs = null;
-    _path = null;
-}
-const fs = _fs;
-const path = _path;
-
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export type ArrayItemSame = (left: any, right: any) => boolean;
@@ -122,6 +110,18 @@ export function mapIsEmpty(map: any | undefined): boolean { // object with strin
 }
 
 export function loadPackageInfo(filePath: string, key?:string): any {
+    let _fs;
+    let _path;
+    if (!isBrowser()) {
+        _fs = require( 'fs');
+        _path = require( 'path');
+    } else {
+        _fs = null;
+        _path = null;
+    }
+    const fs = _fs;
+    const path = _path;
+
     let content:string;
     let data = {};
 
@@ -201,4 +201,8 @@ export function boolFromString(value: string, trim: boolean = true): boolean | u
         default:
             return;
     }
+}
+
+export function randomNumberForRange(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
