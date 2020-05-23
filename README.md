@@ -14,9 +14,10 @@ Lightweight custom Typescript utility
     - ArrayCompareResult = `{ onlyInLeft: any[], changed: any[], same: any[],onlyInRight: any[] }`
     - ArrayItemSame = `(left: any, right: any) => boolean`
 - `boolFromString(value: string, trim: boolean = true): boolean | undefined` - returns true if a string made lower case equals 'yes', 'true' or '1', false if equals 'no', 'false', '0', in all other cases returns undefined
+- `randomNumberForRange(min: number, max: number): number` - returns a random number in the range between the given min and max parameters (including min and max)
 
 For more details:
-- read comments in in https://github.com/sittingbool/util-ts/blob/master/src/util.ts
+- read comments in https://github.com/sittingbool/util-ts/blob/master/src/util.ts
 - read tests in https://github.com/sittingbool/util-ts/blob/master/test/util.spec.ts
 
 ## browser support
@@ -31,4 +32,4 @@ For more details:
 }
 ```
 
-Otherwise you will get an error that `fs` or `path` cannot be found.
+Otherwise you will get a warning that `fs` or `path` cannot be found. Also the `loadPackageInfo` function will not be working without fs and path.

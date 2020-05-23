@@ -62,11 +62,13 @@ exports.mapIsEmpty = mapIsEmpty;
 function loadPackageInfo(filePath, key) {
     let _fs;
     let _path;
-    if (!isBrowser()) {
-        _fs = require('fs');
-        _path = require('path');
+    try {
+        if (!isBrowser()) {
+            _fs = require('fs');
+            _path = require('path');
+        }
     }
-    else {
+    catch (err) {
         _fs = null;
         _path = null;
     }
@@ -75,7 +77,7 @@ function loadPackageInfo(filePath, key) {
     let content;
     let data = {};
     if (!fs || !path) {
-        console.log('loadPackageInfo only works if you can require node.js module `fs`');
+        console.error('loadPackageInfo only works if you can require node.js module `fs`');
         return null;
     }
     try {

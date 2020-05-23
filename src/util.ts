@@ -112,10 +112,13 @@ export function mapIsEmpty(map: any | undefined): boolean { // object with strin
 export function loadPackageInfo(filePath: string, key?:string): any {
     let _fs;
     let _path;
-    if (!isBrowser()) {
-        _fs = require( 'fs');
-        _path = require( 'path');
-    } else {
+
+    try {
+        if (!isBrowser()) {
+            _fs = require('fs');
+            _path = require('path');
+        }
+    } catch(err) {
         _fs = null;
         _path = null;
     }
@@ -126,7 +129,7 @@ export function loadPackageInfo(filePath: string, key?:string): any {
     let data = {};
 
     if (!fs || !path) {
-        console.log('loadPackageInfo only works if you can require node.js module `fs`');
+        console.error('loadPackageInfo only works if you can require node.js module `fs`');
         return null;
     }
 
