@@ -4,7 +4,7 @@ import {
     ArrayItemSame,
     boolFromString,
     capitalize,
-    compareArrays,
+    compareArrays, loadJSONFromFile, loadPackageInfo,
     mapIsEmpty,
     pluralize, randomNumberForRange,
     randomString,
@@ -87,6 +87,23 @@ class UtilTest {
         should(mapIsEmpty({ key: true })).be.false();
         should(mapIsEmpty({ key: 1 })).be.false();
         should(mapIsEmpty({ key: null })).be.false();
+    }
+
+    @test("should correctly read json files")
+    async assert_loadJson() {
+        const fs = require('fs');
+        const path = require('path');
+        const util = require('util');
+        const result = await loadJSONFromFile(path.join(__dirname, '..', '..', 'package.json'),{fs, util});
+        should(result.name).be.equal('sb-util-ts');
+    }
+
+    @test("should correctly read the package json version")
+    assert_loadPackageJson() {
+        const fs = require('fs');
+        const path = require('path');
+        const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
+        should(result).be.equal('2.1.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")

@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------------------------------
 let _fs;
 let _path;
+let _util;
 
 function isBrowser() {
     return (typeof window !== 'undefined');
@@ -20,9 +21,10 @@ export interface ArrayCompareResult {
     onlyInRight: any[];
 }
 
-export function setupSbUtil(options: {fs: any, path: any}) {
+export function setupSbUtil(options: {fs: any, path: any, util?: any}) {
     _fs = options.fs;
     _path = options.path;
+    _util = options.util;
 }
 //-----------------------------------------------------------------------------------------------------
 
@@ -117,21 +119,47 @@ export function mapIsEmpty(map: any | undefined): boolean { // object with strin
     return ! map || typeof map !== 'object' || Object.keys(map).length < 1;
 }
 
+
+export async function loadJSONFromFile(filePath: string, nodejs?: {fs: any, util: any}): Promise<any> {
+    const fs = _fs || nodejs ? nodejs.fs : null;
+    const util = _util || nodejs ? nodejs.util : null;
+
+    if (!fs || !util) {
+        console.error('loadJSONFromFile only works if you can require node.js module `fs` and `util`');
+        return null;
+    }
+
+    const readFile = util.promisify(fs.readFile);
+    const content = await readFile(filePath, 'utf8');
+    return JSON.parse(content);
+}
+
+
+export function loadJSONFromFileSync(filePath: string, fs?: any): any {
+    fs = _fs || fs;
+
+    if (!fs) {
+        console.error('loadJSONFromFileSync only works if you can require node.js module `fs`');
+        return null;
+    }
+
+    const content = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(content);
+}
+
+
 export function loadPackageInfo(filePath: string, key?:string, nodejs?: {fs: any, path: any}): any {
     const fs = _fs || nodejs ? nodejs.fs : null;
     const path = _path || nodejs ? nodejs.path : null;
 
-    let content:string;
-    let data = {};
-
     if (!fs || !path) {
-        console.error('loadPackageInfo only works if you can require node.js module `fs`');
+        console.error('loadPackageInfo only works if you can require node.js module `fs` and `path`');
         return null;
     }
 
+    let data;
     try {
-        content = fs.readFileSync(path.join(filePath, 'package.json'), 'utf8');
-        data = JSON.parse(content);
+        data = loadJSONFromFileSync(path.join(filePath, 'package.json'), fs);
     } catch(err) {
         console.error(err);
         return data || {};

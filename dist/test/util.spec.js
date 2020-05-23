@@ -5,6 +5,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mocha_typescript_1 = require("mocha-typescript");
 const util_1 = require("../src/util");
@@ -62,6 +71,21 @@ let UtilTest = class UtilTest {
         should(util_1.mapIsEmpty({ key: true })).be.false();
         should(util_1.mapIsEmpty({ key: 1 })).be.false();
         should(util_1.mapIsEmpty({ key: null })).be.false();
+    }
+    assert_loadJson() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const fs = require('fs');
+            const path = require('path');
+            const util = require('util');
+            const result = yield util_1.loadJSONFromFile(path.join(__dirname, '..', '..', 'package.json'), { fs, util });
+            should(result.name).be.equal('sb-util-ts');
+        });
+    }
+    assert_loadPackageJson() {
+        const fs = require('fs');
+        const path = require('path');
+        const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
+        should(result).be.equal('2.1.0');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
@@ -155,6 +179,12 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should detect empty object map")
 ], UtilTest.prototype, "assert_mapIsEmpty", null);
+__decorate([
+    mocha_typescript_1.test("should correctly read json files")
+], UtilTest.prototype, "assert_loadJson", null);
+__decorate([
+    mocha_typescript_1.test("should correctly read the package json version")
+], UtilTest.prototype, "assert_loadPackageJson", null);
 __decorate([
     mocha_typescript_1.test("should correctly compare two arrays, all changes, default comparison")
 ], UtilTest.prototype, "assert_compareArrays", null);

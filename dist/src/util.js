@@ -1,7 +1,17 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 let _fs;
 let _path;
+let _util;
 function isBrowser() {
     return (typeof window !== 'undefined');
 }
@@ -12,6 +22,7 @@ const defaultArrayItemSame = (left, right) => {
 function setupSbUtil(options) {
     _fs = options.fs;
     _path = options.path;
+    _util = options.util;
 }
 exports.setupSbUtil = setupSbUtil;
 function stringIsEmpty(string) {
@@ -66,18 +77,40 @@ function mapIsEmpty(map) {
     return !map || typeof map !== 'object' || Object.keys(map).length < 1;
 }
 exports.mapIsEmpty = mapIsEmpty;
+function loadJSONFromFile(filePath, nodejs) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const fs = _fs || nodejs ? nodejs.fs : null;
+        const util = _util || nodejs ? nodejs.util : null;
+        if (!fs || !util) {
+            console.error('loadJSONFromFile only works if you can require node.js module `fs` and `util`');
+            return null;
+        }
+        const readFile = util.promisify(fs.readFile);
+        const content = yield readFile(filePath, 'utf8');
+        return JSON.parse(content);
+    });
+}
+exports.loadJSONFromFile = loadJSONFromFile;
+function loadJSONFromFileSync(filePath, fs) {
+    fs = _fs || fs;
+    if (!fs) {
+        console.error('loadJSONFromFileSync only works if you can require node.js module `fs`');
+        return null;
+    }
+    const content = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(content);
+}
+exports.loadJSONFromFileSync = loadJSONFromFileSync;
 function loadPackageInfo(filePath, key, nodejs) {
     const fs = _fs || nodejs ? nodejs.fs : null;
     const path = _path || nodejs ? nodejs.path : null;
-    let content;
-    let data = {};
     if (!fs || !path) {
-        console.error('loadPackageInfo only works if you can require node.js module `fs`');
+        console.error('loadPackageInfo only works if you can require node.js module `fs` and `path`');
         return null;
     }
+    let data;
     try {
-        content = fs.readFileSync(path.join(filePath, 'package.json'), 'utf8');
-        data = JSON.parse(content);
+        data = loadJSONFromFileSync(path.join(filePath, 'package.json'), fs);
     }
     catch (err) {
         console.error(err);

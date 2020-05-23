@@ -23,12 +23,16 @@ Lightweight Typescript utility for
   ```
    import * as fs from 'fs';
    import * as path from 'path';
+   //import * as util from 'util'; // optional
   
    setupSbUtil({fs, path});
+   //setupSbUtil({fs, path, util}); // optional
   
   // ALTERNATIVE
   const version = loadPackageInfo('.', 'version', {fs, path}) as string;
   ```
+- `loadJSONFromFileSync(filePath: string, fs?: any): any` - returns the parsed contents of a json file using the given fs or from setupSbUtil (see above)
+- `async loadJSONFromFile(filePath: string, nodejs?: {fs: any, util: any}): Promise<any>` - returns the parsed contents of a json file using the given fs or from setupSbUtil (see above)
 - `compareArrays(left: any[], right: any[], comp?: ArrayItemSame, fullComp?: ArrayItemSame): ArrayCompareResult` - Array comparator for full change detection. You can optionally add a compare - function that identifies ignoring changes (e.g. by a single property such as the id of a db object) and also a full comparison callback that returns true if there are no changes. Both default to comparing via JSON.stringify. Please read the comments in the src file. Types meaning:
     - ArrayCompareResult = `{ onlyInLeft: any[], changed: any[], same: any[],onlyInRight: any[] }`
     - ArrayItemSame = `(left: any, right: any) => boolean`

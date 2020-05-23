@@ -8,6 +8,7 @@ export interface ArrayCompareResult {
 export declare function setupSbUtil(options: {
     fs: any;
     path: any;
+    util?: any;
 }): void;
 export declare function stringIsEmpty(string: string | undefined): boolean;
 export declare function capitalize(string: string): string;
@@ -15,6 +16,11 @@ export declare function pluralize(string: string): string;
 export declare function randomString(length: number, chars?: string): string;
 export declare function arrayIsEmpty(arr: any[] | undefined): boolean;
 export declare function mapIsEmpty(map: any | undefined): boolean;
+export declare function loadJSONFromFile(filePath: string, nodejs?: {
+    fs: any;
+    util: any;
+}): Promise<any>;
+export declare function loadJSONFromFileSync(filePath: string, fs?: any): any;
 export declare function loadPackageInfo(filePath: string, key?: string, nodejs?: {
     fs: any;
     path: any;
