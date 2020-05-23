@@ -1,4 +1,7 @@
 //-----------------------------------------------------------------------------------------------------
+let _fs;
+let _path;
+
 function isBrowser() {
     return (typeof window !== 'undefined');
 }
@@ -15,6 +18,11 @@ export interface ArrayCompareResult {
     changed: any[];
     same: any[];
     onlyInRight: any[];
+}
+
+export function setupSbUtil(options: {fs: any, path: any}) {
+    _fs = options.fs;
+    _path = options.path;
 }
 //-----------------------------------------------------------------------------------------------------
 
@@ -109,21 +117,9 @@ export function mapIsEmpty(map: any | undefined): boolean { // object with strin
     return ! map || typeof map !== 'object' || Object.keys(map).length < 1;
 }
 
-export function loadPackageInfo(filePath: string, key?:string): any {
-    let _fs;
-    let _path;
-
-    try {
-        if (!isBrowser()) {
-            _fs = require('fs');
-            _path = require('path');
-        }
-    } catch(err) {
-        _fs = null;
-        _path = null;
-    }
-    const fs = _fs;
-    const path = _path;
+export function loadPackageInfo(filePath: string, key?:string, nodejs?: {fs: any, path: any}): any {
+    const fs = _fs || nodejs ? nodejs.fs : null;
+    const path = _path || nodejs ? nodejs.path : null;
 
     let content:string;
     let data = {};

@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+let _fs;
+let _path;
 function isBrowser() {
     return (typeof window !== 'undefined');
 }
@@ -7,6 +9,11 @@ const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHI
 const defaultArrayItemSame = (left, right) => {
     return JSON.stringify(left) === JSON.stringify(right);
 };
+function setupSbUtil(options) {
+    _fs = options.fs;
+    _path = options.path;
+}
+exports.setupSbUtil = setupSbUtil;
 function stringIsEmpty(string) {
     return (typeof string !== 'string' || !string);
 }
@@ -59,21 +66,9 @@ function mapIsEmpty(map) {
     return !map || typeof map !== 'object' || Object.keys(map).length < 1;
 }
 exports.mapIsEmpty = mapIsEmpty;
-function loadPackageInfo(filePath, key) {
-    let _fs;
-    let _path;
-    try {
-        if (!isBrowser()) {
-            _fs = require('fs');
-            _path = require('path');
-        }
-    }
-    catch (err) {
-        _fs = null;
-        _path = null;
-    }
-    const fs = _fs;
-    const path = _path;
+function loadPackageInfo(filePath, key, nodejs) {
+    const fs = _fs || nodejs ? nodejs.fs : null;
+    const path = _path || nodejs ? nodejs.path : null;
     let content;
     let data = {};
     if (!fs || !path) {
