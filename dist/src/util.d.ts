@@ -28,3 +28,4 @@ export declare function loadPackageInfo(filePath: string, key?: string, nodejs?:
 export declare function compareArrays(left: any[], right: any[], comp?: ArrayItemSame, fullComp?: ArrayItemSame): ArrayCompareResult;
 export declare function boolFromString(value: string, trim?: boolean): boolean | undefined;
 export declare function randomNumberForRange(min: number, max: number): number;
+export declare function sleep(milliseconds: number): Promise<void>;

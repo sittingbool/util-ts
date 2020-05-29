@@ -233,3 +233,7 @@ export function boolFromString(value: string, trim: boolean = true): boolean | u
 export function randomNumberForRange(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function sleep(milliseconds: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}

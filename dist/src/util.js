@@ -175,4 +175,8 @@ function randomNumberForRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 exports.randomNumberForRange = randomNumberForRange;
+function sleep(milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+exports.sleep = sleep;
 //# sourceMappingURL=util.js.map

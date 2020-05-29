@@ -38,6 +38,7 @@ Lightweight Typescript utility for
     - ArrayItemSame = `(left: any, right: any) => boolean`
 - `boolFromString(value: string, trim: boolean = true): boolean | undefined` - returns true if a string made lower case equals 'yes', 'true' or '1', false if equals 'no', 'false', '0', in all other cases returns undefined
 - `randomNumberForRange(min: number, max: number): number` - returns a random number in the range between the given min and max parameters (including min and max)
+- `sleep(milliseconds: number): Promise<void>` - promised sleep function for ussage with await. e.g. `await sleep(1500); // continues in next line after 1.5 sek`
 
 For more details:
 - read comments in https://github.com/sittingbool/util-ts/blob/master/src/util.ts
