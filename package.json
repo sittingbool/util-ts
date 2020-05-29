@@ -1,6 +1,6 @@
 {
   "name": "sb-util-ts",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Typescript utility",
   "main": "./dist/src/util.js",
   "types": "./dist/src/util.d.ts",
