@@ -8,6 +8,7 @@ Lightweight Typescript utility for
 - comparing arrays
 - getting a bool value from a string expression (like env var)
 - making a random number from range
+- ... many more ... just read below:
 
 ## offers the following functions
 
@@ -39,6 +40,7 @@ Lightweight Typescript utility for
 - `boolFromString(value: string, trim: boolean = true): boolean | undefined` - returns true if a string made lower case equals 'yes', 'true' or '1', false if equals 'no', 'false', '0', in all other cases returns undefined
 - `randomNumberForRange(min: number, max: number): number` - returns a random number in the range between the given min and max parameters (including min and max)
 - `sleep(milliseconds: number): Promise<void>` - promised sleep function for ussage with await. e.g. `await sleep(1500); // continues in next line after 1.5 sek`
+- `numberOfMatches(value: string, expression: RegExp | string, caseSensitive = false): number` - checks how often an expression can be found in a string
 
 For more details:
 - read comments in https://github.com/sittingbool/util-ts/blob/master/src/util.ts

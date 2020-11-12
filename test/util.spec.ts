@@ -5,9 +5,9 @@ import {
     boolFromString,
     capitalize,
     compareArrays, loadJSONFromFile, loadPackageInfo,
-    mapIsEmpty,
+    mapIsEmpty, numberOfMatches,
     pluralize, randomNumberForRange,
-    randomString,
+    randomString, sleep,
     stringIsEmpty
 } from "../src/util";
 import * as should from 'should';
@@ -103,7 +103,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.1.0');
+        should(result).be.equal('2.3.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")
@@ -188,5 +188,28 @@ class UtilTest {
                 adaptor++;
             }
         }
+    }
+
+    @test("should correctly sleep for a bit")
+    async assert_sleep() {
+        const start = Date.now();
+        await sleep(100);
+        const end = Date.now();
+        should(end).be.greaterThanOrEqual(start + 100);
+    }
+
+    @test("should correctly match expressions")
+    assert_numberOfMatches() {
+        should(numberOfMatches('Annamaria', 'a')).be.exactly(4);
+        should(numberOfMatches('Annamaria', 'a', true)).be.exactly(3);
+        should(numberOfMatches('Annamaria', /a/ig)).be.exactly(4);
+        should(numberOfMatches('Annamaria', /a/g)).be.exactly(3);
+
+        const germanRime = 'Fichers Fritze hat frische Fische. Frische Fische hat Fischers Fritze.';
+
+        should(numberOfMatches(germanRime, 'frische')).be.exactly(2);
+        should(numberOfMatches(germanRime, 'frische', true)).be.exactly(1);
+        should(numberOfMatches(germanRime, /frische/ig)).be.exactly(2);
+        should(numberOfMatches(germanRime, /frische/g)).be.exactly(1);
     }
 }

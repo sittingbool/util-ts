@@ -237,3 +237,17 @@ export function randomNumberForRange(min: number, max: number): number {
 export function sleep(milliseconds: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
+
+/**
+ * checks how often an expression can be found in a string
+ * @param value - the string to be looking into
+ * @param expression - the RegExp or string that should be searched for
+ * @param caseSensitive - if expression is a string this can be to true if you need to check case sensitive
+ */
+export function numberOfMatches(value: string, expression: RegExp | string, caseSensitive = false): number {
+    if (stringIsEmpty(value)) return 0;
+    if (typeof expression === 'string') {
+        expression = new RegExp(expression, caseSensitive ? 'g' : 'ig');
+    }
+    return (value.match(expression) || []).length;
+}

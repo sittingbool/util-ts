@@ -85,7 +85,7 @@ let UtilTest = class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
-        should(result).be.equal('2.1.0');
+        should(result).be.equal('2.3.0');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
@@ -160,6 +160,25 @@ let UtilTest = class UtilTest {
             }
         }
     }
+    assert_sleep() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const start = Date.now();
+            yield util_1.sleep(100);
+            const end = Date.now();
+            should(end).be.greaterThanOrEqual(start + 100);
+        });
+    }
+    assert_numberOfMatches() {
+        should(util_1.numberOfMatches('Annamaria', 'a')).be.exactly(4);
+        should(util_1.numberOfMatches('Annamaria', 'a', true)).be.exactly(3);
+        should(util_1.numberOfMatches('Annamaria', /a/ig)).be.exactly(4);
+        should(util_1.numberOfMatches('Annamaria', /a/g)).be.exactly(3);
+        const germanRime = 'Fichers Fritze hat frische Fische. Frische Fische hat Fischers Fritze.';
+        should(util_1.numberOfMatches(germanRime, 'frische')).be.exactly(2);
+        should(util_1.numberOfMatches(germanRime, 'frische', true)).be.exactly(1);
+        should(util_1.numberOfMatches(germanRime, /frische/ig)).be.exactly(2);
+        should(util_1.numberOfMatches(germanRime, /frische/g)).be.exactly(1);
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -197,6 +216,12 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly return a random number in range")
 ], UtilTest.prototype, "assert_randomNumberForRange", null);
+__decorate([
+    mocha_typescript_1.test("should correctly sleep for a bit")
+], UtilTest.prototype, "assert_sleep", null);
+__decorate([
+    mocha_typescript_1.test("should correctly match expressions")
+], UtilTest.prototype, "assert_numberOfMatches", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

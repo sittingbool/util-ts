@@ -29,3 +29,4 @@ export declare function compareArrays(left: any[], right: any[], comp?: ArrayIte
 export declare function boolFromString(value: string, trim?: boolean): boolean | undefined;
 export declare function randomNumberForRange(min: number, max: number): number;
 export declare function sleep(milliseconds: number): Promise<void>;
+export declare function numberOfMatches(value: string, expression: RegExp | string, caseSensitive?: boolean): number;
