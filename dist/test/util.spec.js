@@ -85,7 +85,7 @@ let UtilTest = class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
-        should(result).be.equal('2.3.0');
+        should(result).be.equal('2.4.0');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
@@ -179,6 +179,39 @@ let UtilTest = class UtilTest {
         should(util_1.numberOfMatches(germanRime, /frische/ig)).be.exactly(2);
         should(util_1.numberOfMatches(germanRime, /frische/g)).be.exactly(1);
     }
+    assert_clone() {
+        let data = { name: 'Bill', age: 43 };
+        let cloned = util_1.clone(data);
+        should(cloned).be.eql(data);
+        data.age = 45;
+        should(cloned.age).be.exactly(43);
+        data = [1, 2, 3];
+        cloned = util_1.clone(data);
+        should(cloned).be.eql(data);
+        data.push(4);
+        should(cloned).be.eql([1, 2, 3]);
+        data = [{ name: 'Bill', age: 43 }, { name: 'Jim', age: 56 }];
+        cloned = util_1.clone(data, 1);
+        should(cloned).be.eql(data);
+        should(cloned[0]).be.eql(data[0]);
+        should(cloned[1]).be.eql(data[1]);
+        data[1].age = 57;
+        should(cloned[1].age).be.exactly(56);
+        data = [{ name: 'Bill', meta: { age: 43 } }, { name: 'Jim', meta: { age: 56 } }];
+        cloned = util_1.clone(data, 1);
+        should(cloned).be.eql(data);
+        should(cloned[0]).be.eql(data[0]);
+        should(cloned[1]).be.eql(data[1]);
+        data[1].meta.age = 57;
+        should(cloned[1].meta.age).be.exactly(data[1].meta.age);
+        data[1].meta.age = 56;
+        cloned = util_1.clone(data, 2);
+        should(cloned).be.eql(data);
+        should(cloned[0]).be.eql(data[0]);
+        should(cloned[1]).be.eql(data[1]);
+        data[1].meta.age = 57;
+        should(cloned[1].meta.age).be.exactly(56);
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -222,6 +255,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly match expressions")
 ], UtilTest.prototype, "assert_numberOfMatches", null);
+__decorate([
+    mocha_typescript_1.test("should correctly clone")
+], UtilTest.prototype, "assert_clone", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

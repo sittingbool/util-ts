@@ -30,3 +30,4 @@ export declare function boolFromString(value: string, trim?: boolean): boolean |
 export declare function randomNumberForRange(min: number, max: number): number;
 export declare function sleep(milliseconds: number): Promise<void>;
 export declare function numberOfMatches(value: string, expression: RegExp | string, caseSensitive?: boolean): number;
+export declare function clone<T = any>(data: T, deep?: number): T;

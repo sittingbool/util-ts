@@ -7,7 +7,7 @@ import {
     compareArrays, loadJSONFromFile, loadPackageInfo,
     mapIsEmpty, numberOfMatches,
     pluralize, randomNumberForRange,
-    randomString, sleep,
+    randomString, sleep, clone,
     stringIsEmpty
 } from "../src/util";
 import * as should from 'should';
@@ -103,7 +103,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.3.0');
+        should(result).be.equal('2.4.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")
@@ -211,5 +211,44 @@ class UtilTest {
         should(numberOfMatches(germanRime, 'frische', true)).be.exactly(1);
         should(numberOfMatches(germanRime, /frische/ig)).be.exactly(2);
         should(numberOfMatches(germanRime, /frische/g)).be.exactly(1);
+    }
+
+    @test("should correctly clone")
+    assert_clone() {
+        let data: any = {name: 'Bill', age: 43};
+        let cloned: any = clone(data);
+        should(cloned).be.eql(data);
+        data.age = 45;
+        should(cloned.age).be.exactly(43);
+
+        data = [1, 2, 3];
+        cloned = clone(data);
+        should(cloned).be.eql(data);
+        data.push(4);
+        should(cloned).be.eql([1, 2, 3]);
+
+        data = [{name: 'Bill', age: 43}, {name: 'Jim', age: 56}];
+        cloned = clone(data, 1);
+        should(cloned).be.eql(data);
+        should(cloned[0]).be.eql(data[0]);
+        should(cloned[1]).be.eql(data[1]);
+        data[1].age = 57;
+        should(cloned[1].age).be.exactly(56);
+
+        data = [{name: 'Bill', meta: {age: 43}}, {name: 'Jim', meta: {age: 56}}];
+        cloned = clone(data, 1);
+        should(cloned).be.eql(data);
+        should(cloned[0]).be.eql(data[0]);
+        should(cloned[1]).be.eql(data[1]);
+        data[1].meta.age = 57;
+        should(cloned[1].meta.age).be.exactly(data[1].meta.age); // same for deep 1
+
+        data[1].meta.age = 56;
+        cloned = clone(data, 2);
+        should(cloned).be.eql(data);
+        should(cloned[0]).be.eql(data[0]);
+        should(cloned[1]).be.eql(data[1]);
+        data[1].meta.age = 57;
+        should(cloned[1].meta.age).be.exactly(56); // different for deep 2
     }
 }

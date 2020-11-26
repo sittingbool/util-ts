@@ -251,3 +251,31 @@ export function numberOfMatches(value: string, expression: RegExp | string, case
     }
     return (value.match(expression) || []).length;
 }
+
+
+/**
+ * clones your data to a new instance
+ * @param data - the object, array or string to clone. other types will be returned as is
+ * @param deep - should clone contents as well if object or array by level of this number value (1 = next level, 2 = next level and in that one, ...)
+ */
+export function clone<T = any>(data: T, deep = 1): T {
+    switch (typeof data) {
+        case "string":
+            return <any>('' + data);
+        case "object":
+            if (data === null) return data;
+            if (Array.isArray(data)) {
+                if (deep > 0) return <any>data.map(item => clone<any>(item, deep - 1));
+                return <any>[].concat(data);
+            }
+            if (deep > 0) {
+                const result: any = {};
+                for(const k in data) {
+                    result[k] = clone<any>(data[k], deep - 1);
+                }
+                return result;
+            }
+            return Object.assign({}, data);
+        default: return data;
+    }
+}

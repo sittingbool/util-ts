@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
+exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
 let _fs;
 let _path;
 let _util;
@@ -189,4 +189,28 @@ function numberOfMatches(value, expression, caseSensitive = false) {
     return (value.match(expression) || []).length;
 }
 exports.numberOfMatches = numberOfMatches;
+function clone(data, deep = 1) {
+    switch (typeof data) {
+        case "string":
+            return ('' + data);
+        case "object":
+            if (data === null)
+                return data;
+            if (Array.isArray(data)) {
+                if (deep > 0)
+                    return data.map(item => clone(item, deep - 1));
+                return [].concat(data);
+            }
+            if (deep > 0) {
+                const result = {};
+                for (const k in data) {
+                    result[k] = clone(data[k], deep - 1);
+                }
+                return result;
+            }
+            return Object.assign({}, data);
+        default: return data;
+    }
+}
+exports.clone = clone;
 //# sourceMappingURL=util.js.map
