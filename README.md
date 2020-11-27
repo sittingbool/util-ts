@@ -41,6 +41,8 @@ Lightweight Typescript utility for
 - `randomNumberForRange(min: number, max: number): number` - returns a random number in the range between the given min and max parameters (including min and max)
 - `sleep(milliseconds: number): Promise<void>` - promised sleep function for ussage with await. e.g. `await sleep(1500); // continues in next line after 1.5 sek`
 - `numberOfMatches(value: string, expression: RegExp | string, caseSensitive = false): number` - checks how often an expression can be found in a string
+- `clone<T = any>(data: T, deep = 1): T` - clones an object, array or string including contents by the depth of `deep` to a new instance
+- `prefixObjectKeys<T>(data: T, prefix: string): any` - will return a new object by adding the prefix string to every single key. eg { name: 'Jim', age: 12 } plus `prefix` '_' => { _name: 'Jim', _age: 12 }
 
 For more details:
 - read comments in https://github.com/sittingbool/util-ts/blob/master/src/util.ts

@@ -8,7 +8,7 @@ import {
     mapIsEmpty, numberOfMatches,
     pluralize, randomNumberForRange,
     randomString, sleep, clone,
-    stringIsEmpty
+    stringIsEmpty, prefixObjectKeys
 } from "../src/util";
 import * as should from 'should';
 
@@ -103,7 +103,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.4.0');
+        should(result).be.equal('2.5.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")
@@ -250,5 +250,16 @@ class UtilTest {
         should(cloned[1]).be.eql(data[1]);
         data[1].meta.age = 57;
         should(cloned[1].meta.age).be.exactly(56); // different for deep 2
+    }
+
+    @test("should correctly prefix keys of an object")
+    assert_prefixObjectKeys() {
+        const original = { name: 'Jim', age: 32, hometown: 'Erfurt' };
+        const prefix = 'pre_';
+        const prefixed = prefixObjectKeys(original, prefix);
+
+        for(const key in original) {
+            should(prefixed[prefix+key]).be.exactly(original[key]);
+        }
     }
 }

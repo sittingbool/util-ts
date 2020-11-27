@@ -279,3 +279,17 @@ export function clone<T = any>(data: T, deep = 1): T {
         default: return data;
     }
 }
+
+/**
+ * will return a new object by adding the prefix string to every single key. eg { name: 'Jim', age: 12 } plus prefix '_' => { _name: 'Jim', _age: 12 }
+ * @param data
+ * @param prefix
+ */
+export function prefixObjectKeys(data: any, prefix: string): any {
+    if (mapIsEmpty(data)) return;
+    const result: any = {};
+    for(const key in data) {
+        result[prefix + key] = data[key];
+    }
+    return result;
+}

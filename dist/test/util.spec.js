@@ -85,7 +85,7 @@ let UtilTest = class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
-        should(result).be.equal('2.4.0');
+        should(result).be.equal('2.5.0');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
@@ -212,6 +212,14 @@ let UtilTest = class UtilTest {
         data[1].meta.age = 57;
         should(cloned[1].meta.age).be.exactly(56);
     }
+    assert_prefixObjectKeys() {
+        const original = { name: 'Jim', age: 32, hometown: 'Erfurt' };
+        const prefix = 'pre_';
+        const prefixed = util_1.prefixObjectKeys(original, prefix);
+        for (const key in original) {
+            should(prefixed[prefix + key]).be.exactly(original[key]);
+        }
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -258,6 +266,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly clone")
 ], UtilTest.prototype, "assert_clone", null);
+__decorate([
+    mocha_typescript_1.test("should correctly prefix keys of an object")
+], UtilTest.prototype, "assert_prefixObjectKeys", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

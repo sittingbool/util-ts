@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
+exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
 let _fs;
 let _path;
 let _util;
@@ -213,4 +213,14 @@ function clone(data, deep = 1) {
     }
 }
 exports.clone = clone;
+function prefixObjectKeys(data, prefix) {
+    if (mapIsEmpty(data))
+        return;
+    const result = {};
+    for (const key in data) {
+        result[prefix + key] = data[key];
+    }
+    return result;
+}
+exports.prefixObjectKeys = prefixObjectKeys;
 //# sourceMappingURL=util.js.map
