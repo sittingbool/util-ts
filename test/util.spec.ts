@@ -8,7 +8,7 @@ import {
     mapIsEmpty, numberOfMatches,
     pluralize, randomNumberForRange,
     randomString, sleep, clone,
-    stringIsEmpty, prefixObjectKeys
+    stringIsEmpty, prefixObjectKeys, stripString
 } from "../src/util";
 import * as should from 'should';
 
@@ -103,7 +103,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.5.0');
+        should(result).be.equal('2.6.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")
@@ -261,5 +261,14 @@ class UtilTest {
         for(const key in original) {
             should(prefixed[prefix+key]).be.exactly(original[key]);
         }
+    }
+
+    @test("should correctly strip a string of un allowed chars")
+    assert_stripString() {
+        should(stripString('Hallo Welt', 'al')).be.exactly('alll');
+        should(stripString('Hello World', 'Helo Word')).be.exactly('Hello World');
+
+        // case sensitive
+        should(stripString('Hello World', 'helo word', true)).be.exactly('ello orld');
     }
 }

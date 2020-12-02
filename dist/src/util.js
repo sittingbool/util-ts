@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
+exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
 let _fs;
 let _path;
 let _util;
@@ -70,6 +70,17 @@ function randomString(length, chars = RANDOMIZE_CHARSET_DEFAULT) {
     return result;
 }
 exports.randomString = randomString;
+function stripString(value, allowedChars, caseSensitive = false) {
+    if (stringIsEmpty(value))
+        return value;
+    if (!Array.isArray(allowedChars))
+        allowedChars = allowedChars.split('');
+    if (!caseSensitive) {
+        allowedChars = allowedChars.map(i => i.toLowerCase()).concat(allowedChars.map(i => i.toUpperCase()));
+    }
+    return value.split('').filter(char => allowedChars.indexOf(char) >= 0).join('');
+}
+exports.stripString = stripString;
 function arrayIsEmpty(arr) {
     return !Array.isArray(arr) || arr.length < 1;
 }

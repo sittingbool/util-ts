@@ -110,6 +110,22 @@ export function randomString(length: number, chars: string = RANDOMIZE_CHARSET_D
 }
 
 
+/**
+ * returns a new string containing all chars that are in value and allowedChars
+ * @param value - the value to be stripped of non allowed chars
+ * @param allowedChars - a list of allowed chars
+ * @param caseSensitive - should allowedChars be seen as case sensitive; defaults to false
+ */
+export function stripString(value: string, allowedChars: string | string[], caseSensitive = false): string {
+    if (stringIsEmpty(value)) return value;
+    if (!Array.isArray(allowedChars)) allowedChars = allowedChars.split('');
+    if (!caseSensitive) {
+        allowedChars = allowedChars.map(i => i.toLowerCase()).concat(allowedChars.map(i => i.toUpperCase()));
+    }
+    return value.split('').filter(char => allowedChars.indexOf(char) >= 0).join('');
+}
+
+
 export function arrayIsEmpty(arr: any[] | undefined): boolean {
     return !Array.isArray(arr) || arr.length < 1;
 }

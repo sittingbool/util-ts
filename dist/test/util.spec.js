@@ -85,7 +85,7 @@ let UtilTest = class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
-        should(result).be.equal('2.5.0');
+        should(result).be.equal('2.6.0');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
@@ -220,6 +220,11 @@ let UtilTest = class UtilTest {
             should(prefixed[prefix + key]).be.exactly(original[key]);
         }
     }
+    assert_stripString() {
+        should(util_1.stripString('Hallo Welt', 'al')).be.exactly('alll');
+        should(util_1.stripString('Hello World', 'Helo Word')).be.exactly('Hello World');
+        should(util_1.stripString('Hello World', 'helo word', true)).be.exactly('ello orld');
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -269,6 +274,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly prefix keys of an object")
 ], UtilTest.prototype, "assert_prefixObjectKeys", null);
+__decorate([
+    mocha_typescript_1.test("should correctly strip a string of un allowed chars")
+], UtilTest.prototype, "assert_stripString", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

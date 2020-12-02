@@ -43,6 +43,7 @@ Lightweight Typescript utility for
 - `numberOfMatches(value: string, expression: RegExp | string, caseSensitive = false): number` - checks how often an expression can be found in a string
 - `clone<T = any>(data: T, deep = 1): T` - clones an object, array or string including contents by the depth of `deep` to a new instance
 - `prefixObjectKeys<T>(data: T, prefix: string): any` - will return a new object by adding the prefix string to every single key. eg { name: 'Jim', age: 12 } plus `prefix` '_' => { _name: 'Jim', _age: 12 }
+- `stripString(value: string, allowedChars: string | string[], caseSensitive = false): string` - returns a new string containing all chars that are in value and allowedChars. e.g. `stripString('Hello World', 'ael')` return `'elll'`
 
 For more details:
 - read comments in https://github.com/sittingbool/util-ts/blob/master/src/util.ts
