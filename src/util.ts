@@ -1,3 +1,5 @@
+import { IMap, IMapAny } from "./types";
+
 //-----------------------------------------------------------------------------------------------------
 let _fs;
 let _path;
@@ -309,3 +311,9 @@ export function prefixObjectKeys(data: any, prefix: string): any {
     }
     return result;
 }
+
+
+/**
+ * custom types export statements
+ */
+export { IMap, IMapAny };

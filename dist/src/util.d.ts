@@ -1,3 +1,4 @@
+import { IMap, IMapAny } from "./types";
 export declare type ArrayItemSame = (left: any, right: any) => boolean;
 export interface ArrayCompareResult {
     onlyInLeft: any[];
@@ -33,3 +34,4 @@ export declare function sleep(milliseconds: number): Promise<void>;
 export declare function numberOfMatches(value: string, expression: RegExp | string, caseSensitive?: boolean): number;
 export declare function clone<T = any>(data: T, deep?: number): T;
 export declare function prefixObjectKeys(data: any, prefix: string): any;
+export { IMap, IMapAny };

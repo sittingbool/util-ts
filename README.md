@@ -49,6 +49,11 @@ For more details:
 - read comments in https://github.com/sittingbool/util-ts/blob/master/src/util.ts
 - read tests in https://github.com/sittingbool/util-ts/blob/master/test/util.spec.ts
 
+## Custom types
+
+- `interface IMap<T = string> { [key: string]: T }` a key - value map where the key is always a string and the value is string by default but may be changed using the generic. This prevents the use of `any` for plain JS objects.
+- `interface IMapAny { [key: string]: any }` a key - value map where the key is always a string and the value is any. This prevents the use of `any` for plain JS objects, even as a generic.
+
 ## browser support before version 2.0
 - is given since 1.1.1 (checking if `window` exists)
 - if you add it to angular 4+ please add this to your package.json to make ng serve possible without error:
