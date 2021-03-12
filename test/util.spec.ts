@@ -1,4 +1,4 @@
-import { suite, test} from "mocha-typescript";
+import {suite, test} from "mocha-typescript";
 import {
     arrayIsEmpty,
     ArrayItemSame,
@@ -8,9 +8,12 @@ import {
     mapIsEmpty, numberOfMatches,
     pluralize, randomNumberForRange,
     randomString, sleep, clone,
-    stringIsEmpty, prefixObjectKeys, stripString
+    stringIsEmpty, prefixObjectKeys, stripString,
+    envVariable
 } from "../src/util";
 import * as should from 'should';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -83,10 +86,10 @@ class UtilTest {
         should(mapIsEmpty(null)).be.true();
         should(mapIsEmpty([])).be.true();
         should(mapIsEmpty({})).be.true();
-        should(mapIsEmpty({ key: '' })).be.false();
-        should(mapIsEmpty({ key: true })).be.false();
-        should(mapIsEmpty({ key: 1 })).be.false();
-        should(mapIsEmpty({ key: null })).be.false();
+        should(mapIsEmpty({key: ''})).be.false();
+        should(mapIsEmpty({key: true})).be.false();
+        should(mapIsEmpty({key: 1})).be.false();
+        should(mapIsEmpty({key: null})).be.false();
     }
 
     @test("should correctly read json files")
@@ -94,7 +97,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const util = require('util');
-        const result = await loadJSONFromFile(path.join(__dirname, '..', '..', 'package.json'),{fs, util});
+        const result = await loadJSONFromFile(path.join(__dirname, '..', '..', 'package.json'), {fs, util});
         should(result.name).be.equal('sb-util-ts');
     }
 
@@ -103,7 +106,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.6.0');
+        should(result).be.equal('2.8.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")
@@ -112,7 +115,7 @@ class UtilTest {
         should(JSON.stringify(result.same)).be.eql(JSON.stringify([{b: 2}, 2, 3, 'test1', 'test2']));
         should(result.changed.length).be.exactly(0);
         should(result.onlyInLeft.length).be.exactly(2);
-        should(JSON.stringify(result.onlyInLeft)).be.eql(JSON.stringify([{a: 1},'test3']));
+        should(JSON.stringify(result.onlyInLeft)).be.eql(JSON.stringify([{a: 1}, 'test3']));
         should(result.onlyInRight.length).be.exactly(2);
         should(JSON.stringify(result.onlyInRight)).be.eql(JSON.stringify([{a: 3}, 4]));
     }
@@ -175,7 +178,7 @@ class UtilTest {
     assert_randomNumberForRange() {
         const ranges = [[0, 1], [1, 5], [1, 10], [5, 15], [0, 100]];
         const adaptorLimit = 100;
-        for(const r of ranges) {
+        for (const r of ranges) {
             let min = r[0];
             let max = r[1];
             let adaptor = 0;
@@ -254,12 +257,12 @@ class UtilTest {
 
     @test("should correctly prefix keys of an object")
     assert_prefixObjectKeys() {
-        const original = { name: 'Jim', age: 32, hometown: 'Erfurt' };
+        const original = {name: 'Jim', age: 32, hometown: 'Erfurt'};
         const prefix = 'pre_';
         const prefixed = prefixObjectKeys(original, prefix);
 
-        for(const key in original) {
-            should(prefixed[prefix+key]).be.exactly(original[key]);
+        for (const key in original) {
+            should(prefixed[prefix + key]).be.exactly(original[key]);
         }
     }
 
@@ -270,5 +273,42 @@ class UtilTest {
 
         // case sensitive
         should(stripString('Hello World', 'helo word', true)).be.exactly('ello orld');
+    }
+
+    @test("should correctly parse env variables")
+    assert_envVariable() {
+        dotenv.config( { path: path.join(__dirname, 'test.env') } );
+
+        should(envVariable('SB_UTIL_TEST_STR', 'not set')).be.exactly('Hallo Welt');
+        should(envVariable('SB_UTIL_TEST_NOT_SET', 'not set')).be.exactly('not set');
+
+        should(envVariable('SB_UTIL_TEST_BOOL_1', 'not set', 'boolean')).be.exactly(true);
+        should(typeof envVariable('SB_UTIL_TEST_BOOL_1', 'not set', 'boolean')).be.exactly('boolean');
+        should(envVariable('SB_UTIL_TEST_BOOL_TRUE', 'not set', 'boolean')).be.exactly(true);
+        should(typeof envVariable('SB_UTIL_TEST_BOOL_TRUE', 'not set', 'boolean')).be.exactly('boolean');
+        should(envVariable('SB_UTIL_TEST_BOOL_TRUE', 'not set', 'boolean')).be.exactly(true);
+        should(typeof envVariable('SB_UTIL_TEST_BOOL_TRUE', 'not set', 'boolean')).be.exactly('boolean');
+        should(envVariable('SB_UTIL_TEST_BOOL_0', 'not set', 'boolean')).be.exactly(false);
+        should(typeof envVariable('SB_UTIL_TEST_BOOL_0', 'not set', 'boolean')).be.exactly('boolean');
+        should(envVariable('SB_UTIL_TEST_BOOL_FALSE', 'not set', 'boolean')).be.exactly(false);
+        should(typeof envVariable('SB_UTIL_TEST_BOOL_FALSE', 'not set', 'boolean')).be.exactly('boolean');
+
+        should(envVariable('SB_UTIL_TEST_INT_VALID', 'not set', 'int')).be.exactly(123456789);
+        should(typeof envVariable('SB_UTIL_TEST_INT_VALID', 'not set', 'int')).be.exactly('number');
+
+        should(envVariable('SB_UTIL_TEST_FLOAT_VALID', 'not set', 'float')).be.exactly(123.456789);
+        should(typeof envVariable('SB_UTIL_TEST_FLOAT_VALID', 'not set', 'float')).be.exactly('number');
+
+        try {
+            envVariable('SB_UTIL_TEST_INT_VALID', 'not set', 'int');
+        } catch (e) {
+            should(e.message).be.exactly('Error reading ENV variable SB_UTIL_TEST_INT_VALID as int. Value was parsed to NaN.')
+        }
+
+        try {
+            envVariable('SB_UTIL_TEST_FLOAT_INVALID', 'not set', 'float');
+        } catch (e) {
+            should(e.message).be.exactly('Error reading ENV variable SB_UTIL_TEST_FLOAT_INVALID as float. Value was parsed to NaN.')
+        }
     }
 }

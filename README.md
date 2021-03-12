@@ -44,6 +44,7 @@ Lightweight Typescript utility for
 - `clone<T = any>(data: T, deep = 1): T` - clones an object, array or string including contents by the depth of `deep` to a new instance
 - `prefixObjectKeys<T>(data: T, prefix: string): any` - will return a new object by adding the prefix string to every single key. eg { name: 'Jim', age: 12 } plus `prefix` '_' => { _name: 'Jim', _age: 12 }
 - `stripString(value: string, allowedChars: string | string[], caseSensitive = false): string` - returns a new string containing all chars that are in value and allowedChars. e.g. `stripString('Hello World', 'ael')` return `'elll'`
+- `envVariable(varName: string, defaultValue: any, type: 'string' | 'boolean' | 'int' | 'float' = 'string'): string | boolean | number` Returns an env variable or (if not set) the default value in the data type you choose
 
 For more details:
 - read comments in https://github.com/sittingbool/util-ts/blob/master/src/util.ts

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
+exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
 let _fs;
 let _path;
 let _util;
@@ -234,4 +234,26 @@ function prefixObjectKeys(data, prefix) {
     return result;
 }
 exports.prefixObjectKeys = prefixObjectKeys;
+function envVariable(varName, defaultValue, type = 'string') {
+    let value = process.env[varName];
+    if (stringIsEmpty(value))
+        return defaultValue;
+    switch (type) {
+        case 'boolean':
+            return boolFromString(value);
+        case 'int':
+            value = parseInt(value);
+            if (isNaN(value))
+                throw Error(`Error reading ENV variable ${varName} as int. Value was parsed to NaN.`);
+            return value;
+        case 'float':
+            value = parseFloat(value);
+            if (isNaN(value))
+                throw Error(`Error reading ENV variable ${varName} as float. Value was parsed to NaN.`);
+            return value;
+        default:
+            return value;
+    }
+}
+exports.envVariable = envVariable;
 //# sourceMappingURL=util.js.map

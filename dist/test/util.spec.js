@@ -18,6 +18,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mocha_typescript_1 = require("mocha-typescript");
 const util_1 = require("../src/util");
 const should = require("should");
+const dotenv = require("dotenv");
+const path = require("path");
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 let UtilTest = class UtilTest {
     assert_stringIsEmpty() {
@@ -85,7 +87,7 @@ let UtilTest = class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
-        should(result).be.equal('2.6.0');
+        should(result).be.equal('2.8.0');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
@@ -225,6 +227,37 @@ let UtilTest = class UtilTest {
         should(util_1.stripString('Hello World', 'Helo Word')).be.exactly('Hello World');
         should(util_1.stripString('Hello World', 'helo word', true)).be.exactly('ello orld');
     }
+    assert_envVariable() {
+        dotenv.config({ path: path.join(__dirname, 'test.env') });
+        should(util_1.envVariable('SB_UTIL_TEST_STR', 'not set')).be.exactly('Hallo Welt');
+        should(util_1.envVariable('SB_UTIL_TEST_NOT_SET', 'not set')).be.exactly('not set');
+        should(util_1.envVariable('SB_UTIL_TEST_BOOL_1', 'not set', 'boolean')).be.exactly(true);
+        should(typeof util_1.envVariable('SB_UTIL_TEST_BOOL_1', 'not set', 'boolean')).be.exactly('boolean');
+        should(util_1.envVariable('SB_UTIL_TEST_BOOL_TRUE', 'not set', 'boolean')).be.exactly(true);
+        should(typeof util_1.envVariable('SB_UTIL_TEST_BOOL_TRUE', 'not set', 'boolean')).be.exactly('boolean');
+        should(util_1.envVariable('SB_UTIL_TEST_BOOL_TRUE', 'not set', 'boolean')).be.exactly(true);
+        should(typeof util_1.envVariable('SB_UTIL_TEST_BOOL_TRUE', 'not set', 'boolean')).be.exactly('boolean');
+        should(util_1.envVariable('SB_UTIL_TEST_BOOL_0', 'not set', 'boolean')).be.exactly(false);
+        should(typeof util_1.envVariable('SB_UTIL_TEST_BOOL_0', 'not set', 'boolean')).be.exactly('boolean');
+        should(util_1.envVariable('SB_UTIL_TEST_BOOL_FALSE', 'not set', 'boolean')).be.exactly(false);
+        should(typeof util_1.envVariable('SB_UTIL_TEST_BOOL_FALSE', 'not set', 'boolean')).be.exactly('boolean');
+        should(util_1.envVariable('SB_UTIL_TEST_INT_VALID', 'not set', 'int')).be.exactly(123456789);
+        should(typeof util_1.envVariable('SB_UTIL_TEST_INT_VALID', 'not set', 'int')).be.exactly('number');
+        should(util_1.envVariable('SB_UTIL_TEST_FLOAT_VALID', 'not set', 'float')).be.exactly(123.456789);
+        should(typeof util_1.envVariable('SB_UTIL_TEST_FLOAT_VALID', 'not set', 'float')).be.exactly('number');
+        try {
+            util_1.envVariable('SB_UTIL_TEST_INT_VALID', 'not set', 'int');
+        }
+        catch (e) {
+            should(e.message).be.exactly('Error reading ENV variable SB_UTIL_TEST_INT_VALID as int. Value was parsed to NaN.');
+        }
+        try {
+            util_1.envVariable('SB_UTIL_TEST_FLOAT_INVALID', 'not set', 'float');
+        }
+        catch (e) {
+            should(e.message).be.exactly('Error reading ENV variable SB_UTIL_TEST_FLOAT_INVALID as float. Value was parsed to NaN.');
+        }
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -277,6 +310,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly strip a string of un allowed chars")
 ], UtilTest.prototype, "assert_stripString", null);
+__decorate([
+    mocha_typescript_1.test("should correctly parse env variables")
+], UtilTest.prototype, "assert_envVariable", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);

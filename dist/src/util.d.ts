@@ -34,4 +34,5 @@ export declare function sleep(milliseconds: number): Promise<void>;
 export declare function numberOfMatches(value: string, expression: RegExp | string, caseSensitive?: boolean): number;
 export declare function clone<T = any>(data: T, deep?: number): T;
 export declare function prefixObjectKeys(data: any, prefix: string): any;
+export declare function envVariable(varName: string, defaultValue: any, type?: 'string' | 'boolean' | 'int' | 'float'): string | boolean | number;
 export { IMap, IMapAny };
