@@ -1,4 +1,10 @@
+/// <reference types="node" />
 import { IMap, IMapAny } from "./types";
+export declare type WriteFileOptions = {
+    encoding?: string | null | undefined;
+    mode?: number | string | undefined;
+    flag?: string | undefined;
+} | string | null;
 export declare type ArrayItemSame = (left: any, right: any) => boolean;
 export interface ArrayCompareResult {
     onlyInLeft: any[];
@@ -6,7 +12,7 @@ export interface ArrayCompareResult {
     same: any[];
     onlyInRight: any[];
 }
-export declare function setupSbUtil(options: {
+export declare function setupSbUtil(options?: {
     fs: any;
     path: any;
     util?: any;
@@ -35,4 +41,15 @@ export declare function numberOfMatches(value: string, expression: RegExp | stri
 export declare function clone<T = any>(data: T, deep?: number): T;
 export declare function prefixObjectKeys(data: any, prefix: string): any;
 export declare function envVariable(varName: string, defaultValue: any, type?: 'string' | 'boolean' | 'int' | 'float'): string | boolean | number;
+export declare function readFileAsync(path: any, options: {
+    encoding?: null | undefined;
+    flag?: string | undefined;
+} | string | undefined | null, nodejs?: {
+    fs: any;
+    util: any;
+}): Promise<string | Buffer>;
+export declare function writeFileAsync(path: any, data: any, options: WriteFileOptions, nodejs?: {
+    fs: any;
+    util: any;
+}): Promise<string | Buffer>;
 export { IMap, IMapAny };

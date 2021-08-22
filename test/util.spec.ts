@@ -9,7 +9,7 @@ import {
     pluralize, randomNumberForRange,
     randomString, sleep, clone,
     stringIsEmpty, prefixObjectKeys, stripString,
-    envVariable
+    envVariable, writeFileAsync, readFileAsync
 } from "../src/util";
 import * as should from 'should';
 import * as dotenv from 'dotenv';
@@ -310,5 +310,17 @@ class UtilTest {
         } catch (e) {
             should(e.message).be.exactly('Error reading ENV variable SB_UTIL_TEST_FLOAT_INVALID as float. Value was parsed to NaN.')
         }
+    }
+
+    @test async assert_readFileAsync() {
+        const content = await readFileAsync(path.join(__dirname, 'test_file.txt'), 'utf8');
+        should(content).be.exactly('I am the test content')
+    }
+
+    @test async assert_writeFileSync() {
+        const data = 'I am the write test';
+        await writeFileAsync(path.join(__dirname, 'write_text.txt'), data, 'utf8');
+        const content = await readFileAsync(path.join(__dirname, 'write_text.txt'), 'utf8');
+        should(content).be.exactly(data)
     }
 }

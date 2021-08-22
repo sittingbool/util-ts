@@ -9,10 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
+exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
 let _fs;
 let _path;
 let _util;
+let _readFile;
+let _writeFile;
 function isBrowser() {
     return (typeof window !== 'undefined');
 }
@@ -21,9 +23,19 @@ const defaultArrayItemSame = (left, right) => {
     return JSON.stringify(left) === JSON.stringify(right);
 };
 function setupSbUtil(options) {
+    if (_fs && _path && _util && _readFile)
+        return;
+    if (!options) {
+        const fs = require('fs');
+        const path = require('path');
+        const util = require('util');
+        options = { fs, path, util };
+    }
     _fs = options.fs;
     _path = options.path;
     _util = options.util;
+    _readFile = _util.promisify(_fs.readFile);
+    _writeFile = _util.promisify(_fs.writeFile);
 }
 exports.setupSbUtil = setupSbUtil;
 function stringIsEmpty(string) {
@@ -91,6 +103,8 @@ function mapIsEmpty(map) {
 exports.mapIsEmpty = mapIsEmpty;
 function loadJSONFromFile(filePath, nodejs) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!nodejs)
+            setupSbUtil();
         const fs = _fs || nodejs ? nodejs.fs : null;
         const util = _util || nodejs ? nodejs.util : null;
         if (!fs || !util) {
@@ -104,6 +118,8 @@ function loadJSONFromFile(filePath, nodejs) {
 }
 exports.loadJSONFromFile = loadJSONFromFile;
 function loadJSONFromFileSync(filePath, fs) {
+    if (!fs)
+        setupSbUtil();
     fs = _fs || fs;
     if (!fs) {
         console.error('loadJSONFromFileSync only works if you can require node.js module `fs`');
@@ -114,6 +130,8 @@ function loadJSONFromFileSync(filePath, fs) {
 }
 exports.loadJSONFromFileSync = loadJSONFromFileSync;
 function loadPackageInfo(filePath, key, nodejs) {
+    if (!nodejs)
+        setupSbUtil();
     const fs = _fs || nodejs ? nodejs.fs : null;
     const path = _path || nodejs ? nodejs.path : null;
     if (!fs || !path) {
@@ -256,4 +274,22 @@ function envVariable(varName, defaultValue, type = 'string') {
     }
 }
 exports.envVariable = envVariable;
+function readFileAsync(path, options, nodejs) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!nodejs)
+            setupSbUtil();
+        const read = nodejs ? nodejs.util.promisify(nodejs.fs.readFile) : _readFile;
+        return read(path, options);
+    });
+}
+exports.readFileAsync = readFileAsync;
+function writeFileAsync(path, data, options, nodejs) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!nodejs)
+            setupSbUtil();
+        const write = nodejs ? nodejs.util.promisify(nodejs.fs.writeFile) : _writeFile;
+        return write(path, data, options);
+    });
+}
+exports.writeFileAsync = writeFileAsync;
 //# sourceMappingURL=util.js.map

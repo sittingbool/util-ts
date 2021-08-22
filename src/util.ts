@@ -1,9 +1,13 @@
 import { IMap, IMapAny } from "./types";
 
+export type WriteFileOptions = { encoding?: string | null | undefined; mode?: number | string | undefined; flag?: string | undefined; } | string | null;
+
 //-----------------------------------------------------------------------------------------------------
 let _fs;
 let _path;
 let _util;
+let _readFile;
+let _writeFile;
 
 function isBrowser() {
     return (typeof window !== 'undefined');
@@ -23,10 +27,22 @@ export interface ArrayCompareResult {
     onlyInRight: any[];
 }
 
-export function setupSbUtil(options: {fs: any, path: any, util?: any}) {
+export function setupSbUtil(options?: {fs: any, path: any, util?: any}): void {
+    if (_fs && _path && _util && _readFile) return;
+    if (!options) {
+        // @ts-ignore
+        const fs = require('fs');
+        // @ts-ignore
+        const path = require('path');
+        // @ts-ignore
+        const util = require('util');
+        options = { fs, path, util };
+    }
     _fs = options.fs;
     _path = options.path;
     _util = options.util;
+    _readFile = _util.promisify(_fs.readFile);
+    _writeFile = _util.promisify(_fs.writeFile);
 }
 //-----------------------------------------------------------------------------------------------------
 
@@ -139,6 +155,7 @@ export function mapIsEmpty(map: any | undefined): boolean { // object with strin
 
 
 export async function loadJSONFromFile(filePath: string, nodejs?: {fs: any, util: any}): Promise<any> {
+    if (!nodejs) setupSbUtil();
     const fs = _fs || nodejs ? nodejs.fs : null;
     const util = _util || nodejs ? nodejs.util : null;
 
@@ -154,6 +171,7 @@ export async function loadJSONFromFile(filePath: string, nodejs?: {fs: any, util
 
 
 export function loadJSONFromFileSync(filePath: string, fs?: any): any {
+    if (!fs) setupSbUtil();
     fs = _fs || fs;
 
     if (!fs) {
@@ -167,6 +185,7 @@ export function loadJSONFromFileSync(filePath: string, fs?: any): any {
 
 
 export function loadPackageInfo(filePath: string, key?:string, nodejs?: {fs: any, path: any}): any {
+    if (!nodejs) setupSbUtil();
     const fs = _fs || nodejs ? nodejs.fs : null;
     const path = _path || nodejs ? nodejs.path : null;
 
@@ -336,6 +355,40 @@ export function envVariable(varName: string, defaultValue: any, type: 'string' |
         default:
             return value;
     }
+}
+
+/**
+ * a short wrap for util.promisify(fs.readFile)
+ * @param path - PathLik | number as in fs.readFile
+ * @param options - options as in fs.readFile
+ * @param nodejs - enables you to override fs and util, alternatively see docs for setupSbUtil
+ */
+export async function readFileAsync(
+    path: any,
+    options: { encoding?: null | undefined; flag?: string | undefined; } | string | undefined | null,
+    nodejs?: { fs: any, util: any }
+): Promise<string | Buffer> {
+    if (!nodejs) setupSbUtil();
+    const read = nodejs ? nodejs.util.promisify(nodejs.fs.readFile) : _readFile;
+    return read(path, options);
+}
+
+/**
+ * a short wrap for util.promisify(fs.writeFile)
+ * @param path - PathLik | number as in fs.writeFile
+ * @param data - as in fs.writeFile
+ * @param options - WriteFileOptions as in fs.writeFile
+ * @param nodejs - enables you to override fs and util, alternatively see docs for setupSbUtil
+ */
+export async function writeFileAsync(
+    path: any,
+    data: any,
+    options: WriteFileOptions,
+    nodejs?: { fs: any, util: any }
+): Promise<string | Buffer> {
+    if (!nodejs) setupSbUtil();
+    const write = nodejs ? nodejs.util.promisify(nodejs.fs.writeFile) : _writeFile;
+    return write(path, data, options);
 }
 
 

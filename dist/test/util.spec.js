@@ -258,6 +258,20 @@ let UtilTest = class UtilTest {
             should(e.message).be.exactly('Error reading ENV variable SB_UTIL_TEST_FLOAT_INVALID as float. Value was parsed to NaN.');
         }
     }
+    assert_readFileAsync() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const content = yield util_1.readFileAsync(path.join(__dirname, 'test_file.txt'), 'utf8');
+            should(content).be.exactly('I am the test content');
+        });
+    }
+    assert_writeFileSync() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = 'I am the write test';
+            yield util_1.writeFileAsync(path.join(__dirname, 'write_text.txt'), data, 'utf8');
+            const content = yield util_1.readFileAsync(path.join(__dirname, 'write_text.txt'), 'utf8');
+            should(content).be.exactly(data);
+        });
+    }
 };
 __decorate([
     mocha_typescript_1.test("should find empty string")
@@ -313,6 +327,12 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly parse env variables")
 ], UtilTest.prototype, "assert_envVariable", null);
+__decorate([
+    mocha_typescript_1.test
+], UtilTest.prototype, "assert_readFileAsync", null);
+__decorate([
+    mocha_typescript_1.test
+], UtilTest.prototype, "assert_writeFileSync", null);
 UtilTest = __decorate([
     mocha_typescript_1.suite
 ], UtilTest);
