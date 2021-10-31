@@ -9,9 +9,13 @@ let _util;
 let _readFile;
 let _writeFile;
 
-function isBrowser() {
-    return (typeof window !== 'undefined');
+export function isBrowser() {
+    // looks strange but only accepted this way by all platforms
+    return (typeof window || undefined !== 'undefined') !== 'undefined';
 }
+console.log(`isBrowser: ${isBrowser()}`)
+// @ts-ignore
+var require = typeof __non_webpack_require__ === "function" ? __non_webpack_require__ : require; // this has to be var!!
 
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -41,8 +45,10 @@ export function setupSbUtil(options?: {fs: any, path: any, util?: any}): void {
     _fs = options.fs;
     _path = options.path;
     _util = options.util;
-    _readFile = _util.promisify(_fs.readFile);
-    _writeFile = _util.promisify(_fs.writeFile);
+    if (_util) {
+        _readFile = _util.promisify(_fs.readFile);
+        _writeFile = _util.promisify(_fs.writeFile);
+    }
 }
 //-----------------------------------------------------------------------------------------------------
 

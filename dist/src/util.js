@@ -9,15 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = void 0;
+exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = exports.isBrowser = void 0;
 let _fs;
 let _path;
 let _util;
 let _readFile;
 let _writeFile;
 function isBrowser() {
-    return (typeof window !== 'undefined');
+    return (typeof window || undefined !== 'undefined') !== 'undefined';
 }
+exports.isBrowser = isBrowser;
+console.log(`isBrowser: ${isBrowser()}`);
+var require = typeof __non_webpack_require__ === "function" ? __non_webpack_require__ : require;
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const defaultArrayItemSame = (left, right) => {
     return JSON.stringify(left) === JSON.stringify(right);
@@ -34,8 +37,10 @@ function setupSbUtil(options) {
     _fs = options.fs;
     _path = options.path;
     _util = options.util;
-    _readFile = _util.promisify(_fs.readFile);
-    _writeFile = _util.promisify(_fs.writeFile);
+    if (_util) {
+        _readFile = _util.promisify(_fs.readFile);
+        _writeFile = _util.promisify(_fs.writeFile);
+    }
 }
 exports.setupSbUtil = setupSbUtil;
 function stringIsEmpty(string) {

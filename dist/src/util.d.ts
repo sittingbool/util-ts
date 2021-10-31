@@ -5,6 +5,7 @@ export declare type WriteFileOptions = {
     mode?: number | string | undefined;
     flag?: string | undefined;
 } | string | null;
+export declare function isBrowser(): boolean;
 export declare type ArrayItemSame = (left: any, right: any) => boolean;
 export interface ArrayCompareResult {
     onlyInLeft: any[];

@@ -106,7 +106,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.8.0');
+        should(result).be.equal('2.9.1');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")

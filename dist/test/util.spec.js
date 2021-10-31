@@ -87,7 +87,7 @@ let UtilTest = class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
-        should(result).be.equal('2.8.0');
+        should(result).be.equal('2.9.1');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
