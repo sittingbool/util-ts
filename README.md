@@ -63,7 +63,7 @@ For more details:
 "browser": {
     "fs": false,
     "path": false,`
-    "os": false
+    "util": false
 }
 ```
 
