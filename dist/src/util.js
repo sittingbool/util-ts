@@ -19,7 +19,6 @@ function isBrowser() {
     return (typeof window || undefined !== 'undefined') !== 'undefined';
 }
 exports.isBrowser = isBrowser;
-console.log(`isBrowser: ${isBrowser()}`);
 var require = typeof __non_webpack_require__ === "function" ? __non_webpack_require__ : require;
 const RANDOMIZE_CHARSET_DEFAULT = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const defaultArrayItemSame = (left, right) => {

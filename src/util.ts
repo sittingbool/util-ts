@@ -13,7 +13,7 @@ export function isBrowser() {
     // looks strange but only accepted this way by all platforms
     return (typeof window || undefined !== 'undefined') !== 'undefined';
 }
-console.log(`isBrowser: ${isBrowser()}`)
+//console.log(`isBrowser: ${isBrowser()}`)
 // @ts-ignore
 var require = typeof __non_webpack_require__ === "function" ? __non_webpack_require__ : require; // this has to be var!!
 
