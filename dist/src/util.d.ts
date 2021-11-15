@@ -20,6 +20,7 @@ export declare function setupSbUtil(options?: {
 }): void;
 export declare function stringIsEmpty(string: string | undefined): boolean;
 export declare function capitalize(string: string): string;
+export declare function deCapitalize(string: string): string;
 export declare function pluralize(string: string): string;
 export declare function randomString(length: number, chars?: string): string;
 export declare function stripString(value: string, allowedChars: string | string[], caseSensitive?: boolean): string;

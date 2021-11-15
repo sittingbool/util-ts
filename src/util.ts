@@ -67,7 +67,7 @@ export function stringIsEmpty( string: string | undefined): boolean {
  * @param string - string to be altered
  * @return {string} - string as given just with capital first letter
  */
-export function capitalize( string:string): string {
+export function capitalize(string:string): string {
     let firstChar;
 
     if ( stringIsEmpty(string) ) {
@@ -79,6 +79,27 @@ export function capitalize( string:string): string {
     string = string.substr(1);
 
     string = firstChar.toUpperCase() + string;
+
+    return string;
+}
+
+/**
+ * Returns given string with a lowercase first letter
+ * @param string - string to be altered
+ * @return {string} - string as given just with lowercase first letter
+ */
+export function deCapitalize(string:string): string {
+    let firstChar;
+
+    if ( stringIsEmpty(string) ) {
+        return string;
+    }
+
+    firstChar = string.charAt(0);
+
+    string = string.substr(1);
+
+    string = firstChar.toLowerCase() + string;
 
     return string;
 }

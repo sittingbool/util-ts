@@ -9,7 +9,7 @@ import {
     pluralize, randomNumberForRange,
     randomString, sleep, clone,
     stringIsEmpty, prefixObjectKeys, stripString,
-    envVariable, writeFileAsync, readFileAsync
+    envVariable, writeFileAsync, readFileAsync, deCapitalize
 } from "../src/util";
 import * as should from 'should';
 import * as dotenv from 'dotenv';
@@ -45,6 +45,17 @@ class UtilTest {
 
         should(capitalize('test')).be.equal('Test');
         should(capitalize('Test')).be.equal('Test');
+        should(capitalize('testString')).be.equal('TestString');
+        should(capitalize('TestString')).be.equal('TestString');
+    }
+
+    @test("should create lower-case first char in string")
+    assert_deCapitalize() {
+
+        should(deCapitalize('test')).be.equal('test');
+        should(deCapitalize('Test')).be.equal('test');
+        should(deCapitalize('TestString')).be.equal('testString');
+        should(deCapitalize('testString')).be.equal('testString');
     }
 
     @test("should create plural word from string")
@@ -106,7 +117,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.9.1');
+        should(result).be.equal('2.10.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")

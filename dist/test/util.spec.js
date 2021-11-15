@@ -39,6 +39,14 @@ let UtilTest = class UtilTest {
     assert_capitalize() {
         should(util_1.capitalize('test')).be.equal('Test');
         should(util_1.capitalize('Test')).be.equal('Test');
+        should(util_1.capitalize('testString')).be.equal('TestString');
+        should(util_1.capitalize('TestString')).be.equal('TestString');
+    }
+    assert_deCapitalize() {
+        should(util_1.deCapitalize('test')).be.equal('test');
+        should(util_1.deCapitalize('Test')).be.equal('test');
+        should(util_1.deCapitalize('TestString')).be.equal('testString');
+        should(util_1.deCapitalize('testString')).be.equal('testString');
     }
     assert_pluralize() {
         should(util_1.pluralize('test')).be.equal('tests');
@@ -87,7 +95,7 @@ let UtilTest = class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
-        should(result).be.equal('2.9.1');
+        should(result).be.equal('2.10.0');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
@@ -282,6 +290,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should create capital first char in string")
 ], UtilTest.prototype, "assert_capitalize", null);
+__decorate([
+    mocha_typescript_1.test("should create lower-case first char in string")
+], UtilTest.prototype, "assert_deCapitalize", null);
 __decorate([
     mocha_typescript_1.test("should create plural word from string")
 ], UtilTest.prototype, "assert_pluralize", null);

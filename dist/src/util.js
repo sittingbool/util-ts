@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = exports.isBrowser = void 0;
+exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.deCapitalize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = exports.isBrowser = void 0;
 let _fs;
 let _path;
 let _util;
@@ -57,6 +57,17 @@ function capitalize(string) {
     return string;
 }
 exports.capitalize = capitalize;
+function deCapitalize(string) {
+    let firstChar;
+    if (stringIsEmpty(string)) {
+        return string;
+    }
+    firstChar = string.charAt(0);
+    string = string.substr(1);
+    string = firstChar.toLowerCase() + string;
+    return string;
+}
+exports.deCapitalize = deCapitalize;
 function pluralize(string) {
     let lastChar, pluralChar = 's';
     if (stringIsEmpty(string)) {
