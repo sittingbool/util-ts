@@ -95,7 +95,7 @@ let UtilTest = class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = util_1.loadPackageInfo(path.join(__dirname, '..', '..'), 'version', { fs, path });
-        should(result).be.equal('2.10.0');
+        should(result).be.equal('2.11.0');
     }
     assert_compareArrays() {
         const result = util_1.compareArrays([{ a: 1 }, { b: 2 }, 2, 3, 'test1', 'test2', 'test3'], [{ a: 3 }, { b: 2 }, 2, 3, 4, 'test1', 'test2']);
@@ -105,6 +105,19 @@ let UtilTest = class UtilTest {
         should(JSON.stringify(result.onlyInLeft)).be.eql(JSON.stringify([{ a: 1 }, 'test3']));
         should(result.onlyInRight.length).be.exactly(2);
         should(JSON.stringify(result.onlyInRight)).be.eql(JSON.stringify([{ a: 3 }, 4]));
+    }
+    assert_filterAsync() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const isNotFive = (val) => {
+                return Promise.resolve(val !== 5);
+            };
+            let array = [1, 2, 3, 4, 5];
+            let result = yield util_1.filterAsync(array, i => isNotFive(i));
+            should(JSON.stringify(result)).be.eql(JSON.stringify([1, 2, 3, 4]));
+            array = [5, 10, 15, 20, 25, 30, 35];
+            result = yield util_1.filterAsync(array, i => isNotFive(i));
+            should(JSON.stringify(result)).be.eql(JSON.stringify([10, 15, 20, 25, 30, 35]));
+        });
     }
     assert_compareArraysByComparator() {
         const comparator = (left, right) => {
@@ -311,6 +324,9 @@ __decorate([
 __decorate([
     mocha_typescript_1.test("should correctly compare two arrays, all changes, default comparison")
 ], UtilTest.prototype, "assert_compareArrays", null);
+__decorate([
+    mocha_typescript_1.test("should correctly filter an array with an async method")
+], UtilTest.prototype, "assert_filterAsync", null);
 __decorate([
     mocha_typescript_1.test("should correctly compare two arrays, all changes, custom comparison")
 ], UtilTest.prototype, "assert_compareArraysByComparator", null);

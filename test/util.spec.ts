@@ -9,7 +9,7 @@ import {
     pluralize, randomNumberForRange,
     randomString, sleep, clone,
     stringIsEmpty, prefixObjectKeys, stripString,
-    envVariable, writeFileAsync, readFileAsync, deCapitalize
+    envVariable, writeFileAsync, readFileAsync, deCapitalize, filterAsync
 } from "../src/util";
 import * as should from 'should';
 import * as dotenv from 'dotenv';
@@ -117,7 +117,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.10.0');
+        should(result).be.equal('2.11.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")
@@ -129,6 +129,21 @@ class UtilTest {
         should(JSON.stringify(result.onlyInLeft)).be.eql(JSON.stringify([{a: 1}, 'test3']));
         should(result.onlyInRight.length).be.exactly(2);
         should(JSON.stringify(result.onlyInRight)).be.eql(JSON.stringify([{a: 3}, 4]));
+    }
+
+    @test("should correctly filter an array with an async method")
+    async assert_filterAsync() {
+        const isNotFive = (val: number): Promise<boolean> => {
+            return Promise.resolve(val !== 5);
+        };
+
+        let array = [1, 2, 3, 4, 5];
+        let result = await filterAsync(array, i => isNotFive(i));
+        should(JSON.stringify(result)).be.eql(JSON.stringify([1, 2, 3, 4]));
+
+        array = [5, 10, 15, 20, 25, 30, 35];
+        result = await filterAsync(array, i => isNotFive(i));
+        should(JSON.stringify(result)).be.eql(JSON.stringify([10, 15, 20, 25, 30, 35]));
     }
 
     @test("should correctly compare two arrays, all changes, custom comparison")

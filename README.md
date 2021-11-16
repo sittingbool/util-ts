@@ -38,6 +38,7 @@ Lightweight Typescript utility for
 - `compareArrays(left: any[], right: any[], comp?: ArrayItemSame, fullComp?: ArrayItemSame): ArrayCompareResult` - Array comparator for full change detection. You can optionally add a compare - function that identifies ignoring changes (e.g. by a single property such as the id of a db object) and also a full comparison callback that returns true if there are no changes. Both default to comparing via JSON.stringify. Please read the comments in the src file. Types meaning:
     - ArrayCompareResult = `{ onlyInLeft: any[], changed: any[], same: any[],onlyInRight: any[] }`
     - ArrayItemSame = `(left: any, right: any) => boolean`
+- `filterAsync(array: any[], filter: (item: any) => Promise<boolean>): Promise<any[]>` - like array filter this function excepts a promised filter function to run async
 - `boolFromString(value: string, trim: boolean = true): boolean | undefined` - returns true if a string made lower case equals 'yes', 'true' or '1', false if equals 'no', 'false', '0', in all other cases returns undefined
 - `randomNumberForRange(min: number, max: number): number` - returns a random number in the range between the given min and max parameters (including min and max)
 - `sleep(milliseconds: number): Promise<void>` - promised sleep function for ussage with await. e.g. `await sleep(1500); // continues in next line after 1.5 sek`

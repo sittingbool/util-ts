@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.deCapitalize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = exports.isBrowser = void 0;
+exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.filterAsync = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.deCapitalize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = exports.isBrowser = void 0;
 let _fs;
 let _path;
 let _util;
@@ -198,6 +198,17 @@ function compareArrays(left, right, comp, fullComp) {
     return result;
 }
 exports.compareArrays = compareArrays;
+function filterAsync(array, filter) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const retArray = [];
+        for (const item of array) {
+            if (yield filter(item))
+                retArray.push(item);
+        }
+        return retArray;
+    });
+}
+exports.filterAsync = filterAsync;
 function boolFromString(value, trim = true) {
     if (stringIsEmpty(value))
         return;

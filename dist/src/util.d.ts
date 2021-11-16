@@ -36,6 +36,7 @@ export declare function loadPackageInfo(filePath: string, key?: string, nodejs?:
     path: any;
 }): any;
 export declare function compareArrays(left: any[], right: any[], comp?: ArrayItemSame, fullComp?: ArrayItemSame): ArrayCompareResult;
+export declare function filterAsync(array: any[], filter: (item: any) => Promise<boolean>): Promise<any[]>;
 export declare function boolFromString(value: string, trim?: boolean): boolean | undefined;
 export declare function randomNumberForRange(min: number, max: number): number;
 export declare function sleep(milliseconds: number): Promise<void>;

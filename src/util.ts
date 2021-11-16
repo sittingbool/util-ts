@@ -275,6 +275,19 @@ export function compareArrays(left: any[], right: any[], comp?: ArrayItemSame, f
     return result;
 }
 
+/**
+ * like array filter this function excepts a promised filter function to run async
+ * @param array
+ * @param filter
+ */
+export async function filterAsync(array: any[], filter: (item: any) => Promise<boolean>): Promise<any[]> {
+    const retArray: any = [];
+    for(const item of array) {
+        if (await filter(item)) retArray.push(item);
+    }
+    return retArray;
+}
+
 export function boolFromString(value: string, trim: boolean = true): boolean | undefined {
     if (stringIsEmpty(value)) return;
     value = trim ? value.trim() : value;
