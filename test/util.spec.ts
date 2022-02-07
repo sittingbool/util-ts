@@ -1,4 +1,4 @@
-import {suite, test} from "mocha-typescript";
+import {suite, test} from '@testdeck/mocha';
 import {
     arrayIsEmpty,
     ArrayItemSame,
@@ -117,7 +117,7 @@ class UtilTest {
         const fs = require('fs');
         const path = require('path');
         const result = loadPackageInfo(path.join(__dirname, '..', '..'), 'version', {fs, path});
-        should(result).be.equal('2.11.0');
+        should(result).be.equal('2.12.0');
     }
 
     @test("should correctly compare two arrays, all changes, default comparison")

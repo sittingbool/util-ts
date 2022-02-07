@@ -12,7 +12,7 @@ Lightweight Typescript utility for
 
 ## offers the following functions
 
-- `stringIsEmpty(value: string): boolean` - returns true is the given value is not a string or empty
+- `stringIsEmpty(value: string): boolean` - returns true if the given value is not a string or empty
 - `capitalize(value: string): string` - returns the given string with an upper-cased first character
 - `deCapitalize(value: string): string` - returns the given string with a lower-cased first character
 - `pluralize(value: string): string` - returns the given string as plural (like onion -> onions or entity -> entities) with different detection of word endings (like y -> ies)

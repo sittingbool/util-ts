@@ -1,6 +1,6 @@
 {
   "name": "sb-util-ts",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "description": "Typescript utility",
   "main": "./dist/src/util.js",
   "types": "./dist/src/util.d.ts",
@@ -15,21 +15,19 @@
     "util",
     "typescript"
   ],
-  "author": "Richard Habermann <sittingbool@gmx.de> (https://github.com/sittingbool)",
+  "author": "Richard Habermann <chief@sittingbool.tech> (https://github.com/sittingbool)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sittingbool/util-ts/issues"
   },
   "homepage": "https://github.com/sittingbool/util-ts#readme",
   "devDependencies": {
+    "@testdeck/mocha": "^0.2.0",
     "@types/dotenv": "^8.2.0",
-    "@types/lodash": "^4.14.152",
-    "@types/node": "^12.12.42",
+    "@types/node": "^16.11.22",
     "@types/should": "^13.0.0",
-    "dotenv": "^8.2.0",
-    "mocha": "^5.2.0",
-    "mocha-typescript": "^1.1.17",
+    "dotenv": "^16.0.0",
+    "mocha": "^9.2.0",
     "should": "^13.2.3"
-  },
-  "dependencies": {}
+  }
 }
