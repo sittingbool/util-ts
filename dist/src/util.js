@@ -9,12 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.filterAsync = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.deCapitalize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = exports.isBrowser = void 0;
+exports.fileExists = exports.writeFileAsync = exports.readFileAsync = exports.envVariable = exports.prefixObjectKeys = exports.clone = exports.numberOfMatches = exports.sleep = exports.randomNumberForRange = exports.boolFromString = exports.filterAsync = exports.compareArrays = exports.loadPackageInfo = exports.loadJSONFromFileSync = exports.loadJSONFromFile = exports.mapIsEmpty = exports.arrayIsEmpty = exports.stripString = exports.randomString = exports.pluralize = exports.deCapitalize = exports.capitalize = exports.stringIsEmpty = exports.setupSbUtil = exports.isBrowser = void 0;
 let _fs;
 let _path;
 let _util;
 let _readFile;
 let _writeFile;
+let _accessFile;
+let _fsConstants;
 function isBrowser() {
     return (typeof window || undefined !== 'undefined') !== 'undefined';
 }
@@ -39,6 +41,8 @@ function setupSbUtil(options) {
     if (_util) {
         _readFile = _util.promisify(_fs.readFile);
         _writeFile = _util.promisify(_fs.writeFile);
+        _accessFile = _util.promisify(_fs.access);
+        _fsConstants = _fs.constants;
     }
 }
 exports.setupSbUtil = setupSbUtil;
@@ -318,4 +322,16 @@ function writeFileAsync(path, data, options, nodejs) {
     });
 }
 exports.writeFileAsync = writeFileAsync;
+function fileExists(path, nodejs) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!nodejs)
+            setupSbUtil();
+        const constants = nodejs ? nodejs.fs.constants : _fsConstants;
+        const access = nodejs ? nodejs.util.promisify(nodejs.fs.access) : _accessFile;
+        return access(path, constants.F_OK)
+            .then(() => true)
+            .catch(() => false);
+    });
+}
+exports.fileExists = fileExists;
 //# sourceMappingURL=util.js.map

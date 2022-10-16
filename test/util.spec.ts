@@ -9,7 +9,7 @@ import {
     pluralize, randomNumberForRange,
     randomString, sleep, clone,
     stringIsEmpty, prefixObjectKeys, stripString,
-    envVariable, writeFileAsync, readFileAsync, deCapitalize, filterAsync
+    envVariable, writeFileAsync, readFileAsync, deCapitalize, filterAsync, fileExists
 } from "../src/util";
 import * as should from 'should';
 import * as dotenv from 'dotenv';
@@ -348,5 +348,12 @@ class UtilTest {
         await writeFileAsync(path.join(__dirname, 'write_text.txt'), data, 'utf8');
         const content = await readFileAsync(path.join(__dirname, 'write_text.txt'), 'utf8');
         should(content).be.exactly(data)
+    }
+
+    @test async assert_fileExists() {
+        let exists = await fileExists(path.join(__dirname, 'test_file.txt'));
+        should(exists).be.exactly(true);
+        exists = await fileExists(path.join(__dirname, 'not_existing.txt'));
+        should(exists).be.exactly(false);
     }
 }

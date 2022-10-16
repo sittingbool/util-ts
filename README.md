@@ -47,7 +47,44 @@ Lightweight Typescript utility for
 - `prefixObjectKeys<T>(data: T, prefix: string): any` - will return a new object by adding the prefix string to every single key. eg { name: 'Jim', age: 12 } plus `prefix` '_' => { _name: 'Jim', _age: 12 }
 - `stripString(value: string, allowedChars: string | string[], caseSensitive = false): string` - returns a new string containing all chars that are in value and allowedChars. e.g. `stripString('Hello World', 'ael')` return `'elll'`
 - `envVariable(varName: string, defaultValue: any, type: 'string' | 'boolean' | 'int' | 'float' = 'string'): string | boolean | number` Returns an env variable or (if not set) the default value in the data type you choose
+```
+//// File Access:
+/**
+* a short wrap for util.promisify(fs.readFile)
+* @param path - PathLik | number as in fs.readFile
+* @param options - options as in fs.readFile
+* @param nodejs - enables you to override fs and util, alternatively see docs for setupSbUtil
+  */
+  export async function readFileAsync(
+  path: any,
+  options: { encoding?: null | undefined; flag?: string | undefined; } | string | undefined | null,
+  nodejs?: { fs: any, util: any }
+  ): Promise<string | Buffer>
 
+/**
+* a short wrap for util.promisify(fs.writeFile)
+* @param path - PathLik | number as in fs.writeFile
+* @param data - as in fs.writeFile
+* @param options - WriteFileOptions as in fs.writeFile
+* @param nodejs - enables you to override fs and util, alternatively see docs for setupSbUtil
+  */
+  export async function writeFileAsync(
+  path: any,
+  data: any,
+  options: WriteFileOptions,
+  nodejs?: { fs: any, util: any }
+  ): Promise<string | Buffer>
+
+/**
+* a short wrap for util.promisify(fs.exists) using fs.access
+* @param path - PathLik | number as in fs.writeFile
+* @param nodejs - enables you to override fs and util, alternatively see docs for setupSbUtil
+  */
+  export async function fileExists(
+  path: any,
+  nodejs?: { fs: any, util: any }
+  ): Promise<boolean>
+```
 For more details:
 - read comments in https://github.com/sittingbool/util-ts/blob/master/src/util.ts
 - read tests in https://github.com/sittingbool/util-ts/blob/master/test/util.spec.ts

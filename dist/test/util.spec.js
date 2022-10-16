@@ -293,6 +293,14 @@ let UtilTest = class UtilTest {
             should(content).be.exactly(data);
         });
     }
+    assert_fileExists() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let exists = yield (0, util_1.fileExists)(path.join(__dirname, 'test_file.txt'));
+            should(exists).be.exactly(true);
+            exists = yield (0, util_1.fileExists)(path.join(__dirname, 'not_existing.txt'));
+            should(exists).be.exactly(false);
+        });
+    }
 };
 __decorate([
     (0, mocha_1.test)("should find empty string")
@@ -360,6 +368,9 @@ __decorate([
 __decorate([
     mocha_1.test
 ], UtilTest.prototype, "assert_writeFileSync", null);
+__decorate([
+    mocha_1.test
+], UtilTest.prototype, "assert_fileExists", null);
 UtilTest = __decorate([
     mocha_1.suite
 ], UtilTest);

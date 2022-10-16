@@ -8,6 +8,8 @@ let _path;
 let _util;
 let _readFile;
 let _writeFile;
+let _accessFile;
+let _fsConstants;
 
 export function isBrowser() {
     // looks strange but only accepted this way by all platforms
@@ -48,6 +50,8 @@ export function setupSbUtil(options?: {fs: any, path: any, util?: any}): void {
     if (_util) {
         _readFile = _util.promisify(_fs.readFile);
         _writeFile = _util.promisify(_fs.writeFile);
+        _accessFile = _util.promisify(_fs.access);
+        _fsConstants = _fs.constants;
     }
 }
 //-----------------------------------------------------------------------------------------------------
@@ -429,6 +433,23 @@ export async function writeFileAsync(
     if (!nodejs) setupSbUtil();
     const write = nodejs ? nodejs.util.promisify(nodejs.fs.writeFile) : _writeFile;
     return write(path, data, options);
+}
+
+/**
+ * a short wrap for util.promisify(fs.exists) using fs.access
+ * @param path - PathLik | number as in fs.writeFile
+ * @param nodejs - enables you to override fs and util, alternatively see docs for setupSbUtil
+ */
+export async function fileExists(
+    path: any,
+    nodejs?: { fs: any, util: any }
+): Promise<boolean> {
+    if (!nodejs) setupSbUtil();
+    const constants = nodejs ? nodejs.fs.constants : _fsConstants;
+    const access = nodejs ? nodejs.util.promisify(nodejs.fs.access) : _accessFile;
+    return access(path, constants.F_OK)
+        .then(() => true)
+        .catch(() => false)
 }
 
 

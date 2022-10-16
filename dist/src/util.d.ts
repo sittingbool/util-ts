@@ -55,4 +55,8 @@ export declare function writeFileAsync(path: any, data: any, options: WriteFileO
     fs: any;
     util: any;
 }): Promise<string | Buffer>;
+export declare function fileExists(path: any, nodejs?: {
+    fs: any;
+    util: any;
+}): Promise<boolean>;
 export { IMap, IMapAny };
